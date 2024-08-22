@@ -4,6 +4,7 @@ class API::V1::UsersController < ApplicationController
   
   def index
     @users = User.includes(:reviews, :address).all   
+    render json: { users: @users }, status: :ok
   end
 
   def show
