@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       resources :beers
       resources :users do
         resources :reviews, only: [:index]
+        resources :friendships, only: [:index]
       end
       
       resources :reviews, only: [:index, :show, :create, :update, :destroy]
