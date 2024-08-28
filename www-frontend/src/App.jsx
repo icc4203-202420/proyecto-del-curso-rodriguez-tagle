@@ -1,35 +1,86 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
+import './App.css';
+import axios from 'axios';
+import { AppBar, Drawer, List, ListItem, ListItemText, ListItemIcon, Typography, typographyClasses } from '@mui/material';
+// import MenuIcon from '@mui/icons-material/Menu';
+// import HomeIcon from '@mui/icons-material/Home';
+// import AddIcon from '@mui/icons-material/Add';
+// import bars from './components/Bars.jsx';
+
+function Home() {}
+function Bars() {
+  return (
+    <Typography>
+      Hello, World!
+    </Typography>
+  )
+}
+function Events() {}
+function Users() {}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [beers, setBeers] = useState('Cervezas');
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const beersUrl ='http://localhost:3001/api/v1/beers';
+
+  const fetchBeers = async (url) => {
+    const response = await axios.get(url);
+    console.log(response.data.beers[0]);
+    setBeers(response.data.beers[0].name);
+    return response.data.beers[0];
+  }
+
+  function onClick() {
+    fetchBeers(beersUrl);
+  }
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <AppBar>
+        test
+      </AppBar>
+      <Drawer
+        variant="temporary"
+        open={drawerOpen}
+        onClose={toggleDrawer}
+        ModalProps={{
+        keepMounted: true,
+        }}
+      >
+        <List>
+          <ListItem button component={Link} to="/" onClick={toggleDrawer}>
+            <ListItemIcon>
+              {/* <HomeIcon /> */}
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+          <ListItem button component={Link} to="/bars" onClick={toggleDrawer}>
+            <ListItemIcon>
+              {/* <HomeIcon /> */}
+            </ListItemIcon>
+            <ListItemText primary="Bars" />
+          </ListItem>
+        </List>
+      </Drawer>
+
+      <button onClick={toggleDrawer}>
+        {beers}
+      </button>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/bars" element={<Bars />} />
+        {/* No estoy seguro de la de abajo */}
+        <Route path="/bars/events" element={<Events />} />
+        <Route path="/users" element={<Users />} />
+      </Routes>
     </>
   )
 }
 
-export default App
+export default App;
