@@ -31,7 +31,7 @@ const Users = () => {
 
   return (
     <>
-      <Typography variant="h1" color="blue" component="div">
+      <Typography variant="h1" color="#C58100" component="div">
         Users
       </Typography>
       <TextField

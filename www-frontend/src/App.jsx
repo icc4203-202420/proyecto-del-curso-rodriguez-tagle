@@ -56,7 +56,7 @@ function App() {
         <Route path="/bars" element={<Bars />} />
         <Route path="/beers" element={<Beers />} />
         {/* No estoy seguro de la de abajo */}
-        <Route path="/bars/events" element={<Events />} />
+        <Route path="/events" element={<Events />} />
         <Route path="/users" element={<Users />} />
       </Routes>
     </>
