@@ -1,80 +1,60 @@
-import { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import './App.css';
-import axios from 'axios';
-import { AppBar, Drawer, List, ListItem, ListItemText, ListItemIcon, Typography, typographyClasses } from '@mui/material';
-// import MenuIcon from '@mui/icons-material/Menu';
-// import HomeIcon from '@mui/icons-material/Home';
-// import AddIcon from '@mui/icons-material/Add';
-// import bars from './components/Bars.jsx';
+import { AppBar, Toolbar, IconButton, Box } from '@mui/material';
+import { PersonSearch, Campaign, Storefront, Menu, Search, SportsBar, Home } from '@mui/icons-material'
 
-function Home() {}
-function Bars() {
-  return (
-    <Typography>
-      Hello, World!
-    </Typography>
-  )
-}
-function Events() {}
-function Users() {}
+import Bars from './components/Bars';
+import Beers from './components/Beers';
+import Events from './components/Events';
+import Users from './components/Users';
+import HomePage from './components/Home';
 
 function App() {
-  const [beers, setBeers] = useState('Cervezas');
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const beersUrl ='http://localhost:3001/api/v1/beers';
-
-  const fetchBeers = async (url) => {
-    const response = await axios.get(url);
-    console.log(response.data.beers[0]);
-    setBeers(response.data.beers[0].name);
-    return response.data.beers[0];
+  const openDrawer = () => {
+    /* 
+    - Profile
+    - Settings
+    */    
   }
-
-  function onClick() {
-    fetchBeers(beersUrl);
-  }
-
-  const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen);
-  };
+  const handleSearch = () => {}
 
   return (
     <>
-      <AppBar>
-        test
+      <AppBar id='top-app-bar' position='fixed' color='primary'>
+        <Toolbar>
+          <IconButton color='inherit' aria-label="drawer" onClick={openDrawer}>
+            <Menu /* style={{ fill: 'rgba(255, 255, 255, 0.75' }}  *//>
+          </IconButton>
+          <IconButton color='inherit' aria-label="search" onClick={handleSearch}>
+            <Search /* style={{ fill: 'rgba(255, 255, 255, 0.75' }} */ />
+          </IconButton>
+        </Toolbar>
       </AppBar>
-      <Drawer
-        variant="temporary"
-        open={drawerOpen}
-        onClose={toggleDrawer}
-        ModalProps={{
-        keepMounted: true,
-        }}
-      >
-        <List>
-          <ListItem button component={Link} to="/" onClick={toggleDrawer}>
-            <ListItemIcon>
-              {/* <HomeIcon /> */}
-            </ListItemIcon>
-            <ListItemText primary="Home" />
-          </ListItem>
-          <ListItem button component={Link} to="/bars" onClick={toggleDrawer}>
-            <ListItemIcon>
-              {/* <HomeIcon /> */}
-            </ListItemIcon>
-            <ListItemText primary="Bars" />
-          </ListItem>
-        </List>
-      </Drawer>
+      
+      <AppBar id='bot-app-bar' position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+        <Toolbar>
+          <IconButton color="inherit" component={Link} to='/'>
+            <Home style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
+          </IconButton>
+          <IconButton color="inherit" component={Link} to='/beers'>
+            <SportsBar style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
+          </IconButton>
+          <IconButton color="inherit" component={Link} to='/bars'>
+            <Storefront style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
+          </IconButton>
+          <IconButton color="inherit" component={Link} to='/events'>
+            <Campaign style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
+          </IconButton>
+          <IconButton color="inherit" component={Link} to='/users'>
+            <PersonSearch style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
 
-      <button onClick={toggleDrawer}>
-        {beers}
-      </button>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/bars" element={<Bars />} />
+        <Route path="/beers" element={<Beers />} />
         {/* No estoy seguro de la de abajo */}
         <Route path="/bars/events" element={<Events />} />
         <Route path="/users" element={<Users />} />

@@ -20,7 +20,7 @@ const theme = createTheme({
       main: '#ff1744',
     },
     background: {
-      default: '#fff',
+      default: '#F1DCA7',
       paper: '#f5f5f5',
     },
     text: {
@@ -42,12 +42,26 @@ const theme = createTheme({
     // Ajustes para AppBar, por ejemplo, la topbar
     MuiAppBar: {
       styleOverrides: {
+        // root: {
+        //   width: '100%',
+        //   height: '64px',
+        // },
         colorPrimary: {
           color: '#ffffff',  // Establece el color de la fuente a blanco
-          backgroundColor: '#569de3',  // Cambia esto por el color que desees para la topbar
+          backgroundColor: '#C58100',  // Cambia esto por el color que desees para la topbar
         },
       },
     },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          // width: 'auto',
+          // height: '64px',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }
+      }
+    }
   },
 });
 

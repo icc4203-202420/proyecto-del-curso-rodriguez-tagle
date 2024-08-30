@@ -6,6 +6,13 @@ class API::V1::EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy]
   before_action :verify_jwt_token, only: [:create, :update, :destroy]
 
+  # GET bars/:bar_id/events
+  def barIndex
+    bar = Bar.find(params[:bar_id])
+    @events = Event.where(bar_id: bar.id)
+    render json: { events: @events }, status: :ok
+  end
+
   # GET /events
   def index
     @events = Event.all
@@ -60,13 +67,13 @@ class API::V1::EventsController < ApplicationController
     render json: { error: 'Event not found' }, status: :not_found if @event.nil?
   end
 
-  def event_params # TODO: Check params
+  def event_params
     params.require(:event).permit(:name, :description,
       :date, :bar_id, :start_date, :end_date,
       :image_base64)
   end
 
-  def handle_image_attachment # TODO: Check name (image or flyer?)
+  def handle_image_attachment
     decoded_image = decode_image(event_params[:image_base64])
     @event.flyer.attach(io: decoded_image[:io], 
       filename: decoded_image[:filename], 
