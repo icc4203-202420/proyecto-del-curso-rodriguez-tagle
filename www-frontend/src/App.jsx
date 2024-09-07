@@ -8,6 +8,8 @@ import Beers from './components/Beers';
 import Events from './components/Events';
 import Users from './components/Users';
 import HomePage from './components/Home';
+import SignUp from './components/SignUp';
+import ShowBeer from './components/ShowBeer';
 
 function App() {
   const openDrawer = () => {
@@ -23,10 +25,10 @@ function App() {
       <AppBar id='top-app-bar' position='fixed' color='primary'>
         <Toolbar>
           <IconButton color='inherit' aria-label="drawer" onClick={openDrawer}>
-            <Menu /* style={{ fill: 'rgba(255, 255, 255, 0.75' }}  *//>
+            <Menu />
           </IconButton>
           <IconButton color='inherit' aria-label="search" onClick={handleSearch}>
-            <Search /* style={{ fill: 'rgba(255, 255, 255, 0.75' }} */ />
+            <Search />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -53,9 +55,10 @@ function App() {
 
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/bars" element={<Bars />} />
         <Route path="/beers" element={<Beers />} />
-        {/* No estoy seguro de la de abajo */}
+        <Route path="/beers/:id" element={<ShowBeer />} />
         <Route path="/bars/events" element={<Events />} />
         <Route path="/users" element={<Users />} />
       </Routes>

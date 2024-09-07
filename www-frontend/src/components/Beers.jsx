@@ -1,5 +1,7 @@
+/* eslint-disable react/prop-types */
 import { Typography, TextField, Autocomplete } from '@mui/material';
 import useAxios from 'axios-hooks';
+import { Routes, Link, Route } from 'react-router-dom';
 import { useState } from 'react';
 
 const ShowBeers = ({ data, options }) => {
@@ -10,7 +12,12 @@ const ShowBeers = ({ data, options }) => {
   return (
     <ul>
       {filteredData.map(beer => (
-        <li key={beer.id} style={{ fontSize: 25 }}>{beer.name}, {beer.hop}</li>
+        <>
+          <li key={beer.id} style={{ fontSize: 25 }}>{beer.name}, {beer.hop}</li>
+          <Link to={`${beer.id}`}>
+              <button type="button">Show</button>
+          </Link>
+        </>
       ))}
     </ul>
   )
@@ -36,8 +43,6 @@ const Beer = () => {
         Beers
       </Typography>
       <Autocomplete
-        multiple
-        limitTags={2}
         value={selectedOptions}
         onChange={(event, newValue) => { setSelectedOptions(newValue) }}
         options={uniqueBeerNames}
