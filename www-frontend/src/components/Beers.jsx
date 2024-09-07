@@ -39,7 +39,7 @@ const Beer = () => {
 
   return (
     <>
-      <Typography variant="h1" color="blue" component="div">
+      <Typography variant="h1" color="#C58100" component="div">
         Beers
       </Typography>
       <Autocomplete

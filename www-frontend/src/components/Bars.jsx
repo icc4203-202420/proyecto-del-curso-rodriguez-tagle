@@ -27,11 +27,9 @@ const Bar = () => {
 
   const barNames = data.bars.map((item) => item.name);
 
-  console.log(selectedOptions)
-
   return (
     <>
-      <Typography variant="h1" color="blue" component="div">
+      <Typography variant="h1" color="#C58100" component="div">
         Bars
       </Typography>
       <Autocomplete
