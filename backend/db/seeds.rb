@@ -51,4 +51,8 @@ if Rails.env.development?
     end
   end
 
+  # Crear reviews de cervezas para todas las cervezas
+  Beer.all.each do |beer|
+    FactoryBot.create_list(:review, 5, beer: beer)
+  end
 end

@@ -21,10 +21,15 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
+      get 'verify-token', to: 'tokens#verify'
       resources :bars do
         resources :events, only: [:index], action: 'barIndex'
       end
-      resources :beers
+      resources :beers do
+        resources :reviews, only: [:index], action: 'beerIndex'
+      end
+      resources :brands
+      resources :breweries
       resources :events
       resources :users do
         resources :reviews, only: [:index]

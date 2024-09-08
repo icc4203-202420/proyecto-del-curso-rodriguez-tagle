@@ -1,32 +1,140 @@
-import { Routes, Route, Link } from 'react-router-dom';
-import './App.css';
-import { AppBar, Toolbar, IconButton, Box } from '@mui/material';
-import { PersonSearch, Campaign, Storefront, Menu, Search, SportsBar, Home } from '@mui/icons-material'
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Drawer,
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText 
+} from '@mui/material';
+import {
+  PersonSearch,
+  Campaign,
+  Storefront,
+  Menu,
+  Search,
+  SportsBar,
+  Home
+} from '@mui/icons-material'
+import {
+  useState,
+  useEffect
+} from 'react';
+import {
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  useLocation
+} from 'react-router-dom';
 
+import './App.css';
+import useLocalStorageState from 'use-local-storage-state';
+import axiosInstance from './api/axios';
+
+import HomePage from './components/Home';
+import SignUp from './components/SignUp';
+import Login from './components/Login';
 import Bars from './components/Bars';
 import Beers from './components/Beers';
 import Events from './components/Events';
 import Users from './components/Users';
-import HomePage from './components/Home';
-import SignUp from './components/SignUp';
 import ShowBeer from './components/ShowBeer';
+import Review from './components/Review';
 
 function App() {
-  const openDrawer = () => {
-    /* 
-    - Profile
-    - Settings
-    */    
+  const [ open, setOpen ] = useState(false);
+  const toggleDrawer = () => {
+    setOpen(!open);
   }
+
+  const [ token, setToken ] = useLocalStorageState('Tapp/token', {defaultValue: ''});
+  const [ isAuth, setIsAuth ] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  useEffect(() => {
+    const pathNoAuth = ['/', '/login', '/signup', '/beers', '/bars'];
+    console.log(isAuth)
+    if (!isAuth && !pathNoAuth.includes(location.pathname))
+      navigate('/login');
+  }, [isAuth, location.pathname, navigate]);
+
+  useEffect(() => {
+    if (token) {
+      axiosInstance.get('/verify-token', {
+        headers: { Authorization: {token} },
+      })
+      .then(() => {
+        setIsAuth(true);
+        const decodedToken = jwtDecode(token);
+        setUsername(decodedToken.name);
+        navigate('/');
+        console.log('auth!')
+      })
+      .catch(error => {
+        console.error('Error during authentication:', error);
+        setToken('');
+        setIsAuth(false);
+      });
+    } else {
+      setIsAuth(false);
+    }
+  }, [token]);
+
+  const handleJWT = (token) => {
+    setToken(token);
+  }
+
+  const handleLogout = () => {
+    setToken('');
+    setIsAuth(false);
+    navigate('/');
+  }
+
+  const DrawerList = (
+    <Drawer open={open} onClose={toggleDrawer}>
+      <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer}>
+        <List>
+          {!isAuth? (
+            <>
+              <ListItem key={'login'} disablePadding>
+                <ListItemButton component={Link} to={'/login'}>
+                  <ListItemText primary={'Log in'} />
+                </ListItemButton>
+              </ListItem>
+              <ListItem key={'signup'} disablePadding>
+                <ListItemButton component={Link} to={'/signup'}>
+                  <ListItemText primary={'Sign up'} />
+                </ListItemButton>
+              </ListItem>
+            </>
+          ) : (
+            <>
+              <ListItem key={'logout'} disablePadding>
+                <ListItemButton onClick={() => {handleLogout(); toggleDrawer}}>
+                  <ListItemText primary={'Log out'} />
+                </ListItemButton>
+              </ListItem>
+            </>
+          )}
+        </List>
+      </Box>
+    </Drawer>
+  )
+  
   const handleSearch = () => {}
 
   return (
     <>
       <AppBar id='top-app-bar' position='fixed' color='primary'>
         <Toolbar>
-          <IconButton color='inherit' aria-label="drawer" onClick={openDrawer}>
+          <IconButton color='inherit' aria-label="drawer" onClick={toggleDrawer}>
             <Menu />
           </IconButton>
+          {DrawerList}
           <IconButton color='inherit' aria-label="search" onClick={handleSearch}>
             <Search />
           </IconButton>
@@ -56,11 +164,13 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login tokenHandler={handleJWT} />} />
         <Route path="/bars" element={<Bars />} />
         <Route path="/beers" element={<Beers />} />
         <Route path="/beers/:id" element={<ShowBeer />} />
-        <Route path="/bars/events" element={<Events />} />
+        <Route path="/events" element={<Events />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/beers/:beerId/reviews" element={<Review />} />
       </Routes>
     </>
   )

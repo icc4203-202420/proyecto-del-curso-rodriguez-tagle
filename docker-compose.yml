@@ -30,7 +30,7 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - NODE_ENV=development
-    command: yarn dev
+    command: npm run dev
 
   redis:
     image: redis:latest

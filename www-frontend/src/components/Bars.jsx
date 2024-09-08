@@ -26,6 +26,7 @@ const Bar = () => {
   if (error) return <p>Error loading data.</p>
 
   const barNames = data.bars.map((item) => item.name);
+  console.log(barNames)
 
   return (
     <>

@@ -1,10 +1,16 @@
 class API::V1::ReviewsController < ApplicationController
   respond_to :json
-  before_action :set_user, only: [:index, :create]
+  before_action :set_user, only: [:create, :update, :destroy]
   before_action :set_review, only: [:show, :update, :destroy]
 
   def index
-    @reviews = Review.where(user: @user)
+    # @reviews = Review.where(user: @user)
+    @reviews = Review.all
+    render json: { reviews: @reviews }, status: :ok
+  end
+
+  def beerIndex
+    @reviews = Review.where(beer_id: params[:beer_id])
     render json: { reviews: @reviews }, status: :ok
   end
 
