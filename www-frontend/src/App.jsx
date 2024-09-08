@@ -64,19 +64,18 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      axiosInstance.get('/verify-token', {
+      axiosInstance.get('/login', {
         headers: { Authorization: {token} },
       })
       .then(() => {
+        console.log('auth!')
         setIsAuth(true);
         const decodedToken = jwtDecode(token);
         setUsername(decodedToken.name);
-        navigate('/');
-        console.log('auth!')
       })
       .catch(error => {
         console.error('Error during authentication:', error);
-        setToken('');
+        // setToken('');
         setIsAuth(false);
       });
     } else {

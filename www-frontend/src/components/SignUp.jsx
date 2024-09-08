@@ -48,7 +48,7 @@ function SignUp() {
                             .then((res) => {
                                 console.log(res);
                                 alert("User created successfully")
-                                navigation('/login')
+                                // navigation('/login')
                             })
                             .catch((error) => {
                                 console.error(error);

@@ -11,6 +11,21 @@ const validationSchema = yup.object({
 });
 
 function ReviewForm () {
+  const reviewReducer = (state, action) => {
+    switch (action.type) {
+      case 'SHOW_REVIEW':
+        return action.payload;
+      case 'LOADING_REVIEW':
+        return [];
+      case 'ERROR_REVIEW':
+        return [];
+      default:
+        return state;
+    }
+  }
+
+  const [reviews, dispatch] = useReducer(reviewReducer, []);
+
   const { beerId } = useParams();
   const apiUrl = `http://localhost:3001/api/v1/beers/${beerId}/reviews`;
 
