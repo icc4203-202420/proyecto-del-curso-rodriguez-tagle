@@ -42,7 +42,6 @@ import Beers from './components/Beers';
 import Events from './components/Events';
 import Users from './components/Users';
 import ShowBeer from './components/ShowBeer';
-import Review from './components/Review';
 
 function App() {
   const [ open, setOpen ] = useState(false);
@@ -70,12 +69,10 @@ function App() {
       .then(() => {
         console.log('auth!')
         setIsAuth(true);
-        const decodedToken = jwtDecode(token);
-        setUsername(decodedToken.name);
       })
       .catch(error => {
         console.error('Error during authentication:', error);
-        // setToken('');
+        setToken('');
         setIsAuth(false);
       });
     } else {
@@ -169,7 +166,6 @@ function App() {
         <Route path="/beers/:id" element={<ShowBeer />} />
         <Route path="/events" element={<Events />} />
         <Route path="/users" element={<Users />} />
-        <Route path="/beers/:beerId/reviews" element={<Review />} />
       </Routes>
     </>
   )

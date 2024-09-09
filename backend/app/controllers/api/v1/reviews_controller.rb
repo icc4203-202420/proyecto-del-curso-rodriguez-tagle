@@ -1,11 +1,15 @@
 class API::V1::ReviewsController < ApplicationController
   respond_to :json
-  before_action :set_user, only: [:create, :update, :destroy]
+  before_action :set_user, only: [:create, :update, :destroy, :userIndex]
   before_action :set_review, only: [:show, :update, :destroy]
 
   def index
-    # @reviews = Review.where(user: @user)
     @reviews = Review.all
+    render json: { reviews: @reviews }, status: :ok
+  end
+
+  def userIndex
+    @reviews = Review.where(user_id: @user.id)
     render json: { reviews: @reviews }, status: :ok
   end
 
@@ -30,6 +34,15 @@ class API::V1::ReviewsController < ApplicationController
       render json: @review.errors, status: :unprocessable_entity
     end
   end
+
+  def beerCreate
+    @review = Review.new(review_params)
+    if @review.save
+      render json: { review: @review }, status: :created
+    else
+      render json: @review.errors, status: :unprocessable_entity
+    end
+  end 
 
   def update
     if @review.update(review_params)
@@ -56,6 +69,6 @@ class API::V1::ReviewsController < ApplicationController
   end
 
   def review_params
-    params.require(:review).permit(:id, :text, :rating, :beer_id)
+    params.require(:review).permit(:id, :text, :rating, :beer_id, :user_id)
   end
 end

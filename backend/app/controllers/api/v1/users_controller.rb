@@ -8,7 +8,11 @@ class API::V1::UsersController < ApplicationController
   end
 
   def show
-  
+    if @user
+      render json: { user: @user }, status: :ok
+    else
+      render json: { error: "User not found" }, status: :not_found
+    end 
   end
 
   def create

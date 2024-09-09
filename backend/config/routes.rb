@@ -25,13 +25,14 @@ Rails.application.routes.draw do
         resources :events, only: [:index], action: 'barIndex'
       end
       resources :beers do
-        resources :reviews, only: [:index], action: 'beerIndex'
+        get 'reviews', to: 'reviews#beerIndex'
+        post 'reviews', to: 'reviews#beerCreate'
       end
       resources :brands
       resources :breweries
       resources :events
       resources :users do
-        resources :reviews, only: [:index]
+        resources :reviews, only: [:index], action: 'userIndex'
         resources :friendships
       end
       
