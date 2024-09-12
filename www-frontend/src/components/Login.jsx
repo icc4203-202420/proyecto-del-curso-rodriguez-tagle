@@ -31,8 +31,8 @@ function Login({ tokenHandler }) {
                     } else {
                       axiosInstance.post('/login', {"user": values})
                       .then((res) => {
-                        console.log(res.headers.authorization);
                         tokenHandler(res.headers.authorization);
+                        localStorage.setItem('currentUser', JSON.stringify(res.data.status.data.user));
                         navigation('/');
                       })
                       .catch((error) => {
@@ -43,6 +43,7 @@ function Login({ tokenHandler }) {
                           setServerError('Server error. Try again later.');
                         }
                         console.error('Form submition error:', err);
+                        navigation('/login');
                       })
                     }
                 }) 
