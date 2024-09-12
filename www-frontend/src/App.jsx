@@ -42,6 +42,7 @@ import Beers from './components/Beers';
 import Events from './components/Events';
 import Users from './components/Users';
 import ShowBeer from './components/ShowBeer';
+import MapComponent from './components/Maps';
 
 function App() {
   const [ open, setOpen ] = useState(false);
@@ -156,6 +157,8 @@ function App() {
           </IconButton>
         </Toolbar>
       </AppBar>
+
+      <MapComponent />
 
       <Routes>
         <Route path="/" element={<HomePage />} />
