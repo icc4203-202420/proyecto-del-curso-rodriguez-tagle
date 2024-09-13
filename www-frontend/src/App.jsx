@@ -38,11 +38,11 @@ import HomePage from './components/Home';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 import Bars from './components/Bars';
+import ShowBar from './components/ShowBar';
 import Beers from './components/Beers';
 import Events from './components/Events';
 import Users from './components/Users';
 import ShowBeer from './components/ShowBeer';
-import MapComponent from './components/Maps';
 
 function App() {
   const [ open, setOpen ] = useState(false);
@@ -158,13 +158,12 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <MapComponent />
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login tokenHandler={handleJWT} />} />
         <Route path="/bars" element={<Bars />} />
+        <Route path="/bars/:id" element={<ShowBar />} />
         <Route path="/beers" element={<Beers />} />
         <Route path="/beers/:id" element={<ShowBeer />} />
         <Route path="/events" element={<Events />} />

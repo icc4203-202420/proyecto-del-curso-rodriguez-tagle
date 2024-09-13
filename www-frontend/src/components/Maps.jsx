@@ -3,10 +3,32 @@ import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import { useEffect, useRef, useState } from 'react';
 import axiosInstance from '../api/axios';
 
+//Material UI
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import Autocomplete from "@mui/material/Autocomplete";
+
 const MapComponent = () => {
     
     const mapRef = useRef(null);
     const [bars, setBars] = useState([]);
+    const [userLocation, setUserLocation] = useState(null);
+    const [selectedBar, setSelectedBar] = useState(null);
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setUserLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
+                },
+                (error) => {
+                    console.error("Error al obtener la ubicación del usuario:", error);
+                }
+            );
+        } else {
+            console.error("Geolocalización no soportada por el navegador.");
+        }
+    }, []);
     
     useEffect(() => {
         axiosInstance.get('/bars')
@@ -35,31 +57,66 @@ const MapComponent = () => {
                 const { Map } = lib;
                 const map = new Map(mapRef.current, {
                     mapId: 'DEMO_MAP_ID',
-                    center: { lat: 3.345191017812354, lng: 64.78278535070194 },
-                    zoom: 1 ,
+                    center: selectedBar || userLocation || { lat: -33.45694, lng: -70.64827 },
+                    zoom: userLocation ? 14 : 4,
             });
             return map;
         })
         .then((map) => {
-            loader.importLibrary('marker')
-            .then((lib) => {
+            loader.importLibrary('marker').then((lib) => {
                 const { AdvancedMarkerElement, PinElement } = lib;
-                const markers = barsMarkers.map(( { lat, lng }, i ) => {
+                const markers = barsMarkers.map(({ lat, lng }, i) => {
                     const label = labels[i % labels.length];
-                    const pin = new PinElement({ glyph: label });
+                    const pin = new PinElement({
+                            glyph: label,
+                            background: "#C58100", 
+                            borderColor: "#F1DCA7",
+                            glyphColor: "#F1DCA7",
+                        });
                     const position = { lat, lng };
                     return new AdvancedMarkerElement({
                         position,
-                        content: pin.element
+                        content: pin.element,
                     });
                 });
                 new MarkerClusterer({ map, markers });
+
+                if (userLocation) { 
+                    new AdvancedMarkerElement({
+                        position: userLocation,
+                        map,
+                        title: "Your location",
+                    });
+                }
             });
+
         });
-    }, [barsMarkers]); 
+    }, [userLocation, barsMarkers, selectedBar]); 
+
+    const handleSelectBar = (event, value) => {
+        const selectedBar = barsMarkers.find(bar => bar.name === value);
+        if (selectedBar) {
+            setSelectedBar(selectedBar);
+        }
+    };
+
+    function FreeSolo() {
+        return (
+            <Stack spacing={2} sx={{ width: 300 }}>
+                <Autocomplete
+                    id="bars-list"
+                    freeSolo
+                    options={barsMarkers.map((option) => option.name)}
+                    renderInput={(params) => (<TextField {...params} label="Search Bars" />)}
+                    onInputChange={handleSelectBar}
+                />
+            </Stack>
+        );
+    };
 
     return(
     <>
+        <FreeSolo />
         <div ref={mapRef} style={{ width: '50vw', height: '80vh' }} />
     </>
     );
