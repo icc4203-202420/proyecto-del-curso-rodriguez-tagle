@@ -3,6 +3,7 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   typography: {
     fontFamily: [
+        // '"MontserratAlternates',
         'Roboto',
         '"Helvetica Neue"',
         'Arial',
@@ -26,7 +27,7 @@ const theme = createTheme({
     text: {
       primary: '#333333',  // Color para texto principal
       secondary: '#555555',  // Color para texto secundario
-      link: '#1872cc',  // Puedes agregar esto para links
+      link: '#F1DCA7',  // Puedes agregar esto para links
     },
   },
   components: {

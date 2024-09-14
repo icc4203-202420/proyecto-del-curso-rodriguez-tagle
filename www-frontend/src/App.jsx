@@ -42,6 +42,7 @@ import Beers from './components/Beers';
 import Events from './components/Events';
 import Users from './components/Users';
 import ShowBeer from './components/ShowBeer';
+import { Fragment } from 'react';
 
 function App() {
   const [ open, setOpen ] = useState(false);
@@ -51,6 +52,7 @@ function App() {
 
   const [ token, setToken ] = useLocalStorageState('Tapp/token', {defaultValue: ''});
   const [ isAuth, setIsAuth ] = useState(false);
+  const [ signUp, setSignUp ] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -90,6 +92,10 @@ function App() {
     navigate('/');
   }
 
+  const handleSignUp = () => {
+    setSignUp(!signUp);
+  }
+
   const DrawerList = (
     <Drawer open={open} onClose={toggleDrawer}>
       <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer}>
@@ -122,51 +128,66 @@ function App() {
   )
   
   const handleSearch = () => {}
+  console.log(signUp);
 
   return (
     <>
-      <AppBar id='top-app-bar' position='fixed' color='primary'>
-        <Toolbar>
-          <IconButton color='inherit' aria-label="drawer" onClick={toggleDrawer}>
-            <Menu />
-          </IconButton>
-          {DrawerList}
-          <IconButton color='inherit' aria-label="search" onClick={handleSearch}>
-            <Search />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      
-      <AppBar id='bot-app-bar' position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-        <Toolbar>
-          <IconButton color="inherit" component={Link} to='/'>
-            <Home style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
-          </IconButton>
-          <IconButton color="inherit" component={Link} to='/beers'>
-            <SportsBar style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
-          </IconButton>
-          <IconButton color="inherit" component={Link} to='/bars'>
-            <Storefront style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
-          </IconButton>
-          <IconButton color="inherit" component={Link} to='/events'>
-            <Campaign style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
-          </IconButton>
-          <IconButton color="inherit" component={Link} to='/users'>
-            <PersonSearch style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+      {!isAuth? (
+        signUp? (
+          <Login signUpHandler={handleSignUp} tokenHandler={handleJWT} />
+        ) : (
+          <SignUp signUpHandler={handleSignUp} />
+        )
+      ) : (
+        <Fragment>
+          <AppBar id='top-app-bar' position='fixed' color='primary'>
+            <Toolbar>
+              <IconButton color='inherit' aria-label="drawer" onClick={toggleDrawer}>
+                <Menu />
+              </IconButton>
+              {DrawerList}
+              <IconButton color='inherit' aria-label="search" onClick={handleSearch}>
+                <Search />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+        
+          <AppBar id='bot-app-bar' position="fixed" color="primary">
+            <Toolbar>
+              <IconButton color="inherit" component={Link} to='/'>
+                <Home style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
+              </IconButton>
+              <IconButton color="inherit" component={Link} to='/beers'>
+                <SportsBar style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
+              </IconButton>
+              <IconButton color="inherit" component={Link} to='/bars'>
+                <Storefront style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
+              </IconButton>
+              <IconButton color="inherit" component={Link} to='/events'>
+                <Campaign style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
+              </IconButton>
+              <IconButton color="inherit" component={Link} to='/users'>
+                <PersonSearch style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login tokenHandler={handleJWT} />} />
-        <Route path="/bars" element={<Bars />} />
-        <Route path="/beers" element={<Beers />} />
-        <Route path="/beers/:id" element={<ShowBeer />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/users" element={<Users />} />
-      </Routes>
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login tokenHandler={handleJWT} />} />
+            <Route path="/bars" element={<Bars />} />
+            <Route path="/beers" element={<Beers />} />
+            <Route path="/beers/:id" element={<ShowBeer />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/users" element={<Users />} />
+          </Routes>
+        </main>
+      </Fragment>
+      )}
+      
+
     </>
   )
 }

@@ -1,8 +1,9 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 15%;
-  text-align: center;
+main {
+  /* flex-grow: 1; */
+  /* position: relative; */
+  padding-top: 64px;  /* Space for the top AppBar */
+  padding-bottom: 64px; /* Space for the bottom AppBar */
+  overflow: hidden; /* Ensures content doesn't overflow the screen */
 }
 
 #top-app-bar {
@@ -11,4 +12,6 @@
 
 #bot-app-bar {
   border-radius: 10px 10px 0px 0px;
+  top: auto;
+  bottom: 0;
 }

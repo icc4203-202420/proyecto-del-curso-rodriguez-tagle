@@ -34,9 +34,12 @@ const Beer = () => {
 
   return (
     <>
+      <div>
       <Typography variant="h1" color="#C58100" component="div">
         Beers
       </Typography>
+      </div>
+      <div>
       <Autocomplete
         value={selectedOption}
         onChange={(event, newValue) => { setSelectedOptions(newValue) }}
@@ -47,6 +50,7 @@ const Beer = () => {
         )}
         sx={{ width: '100%' }}
       />
+      </div>
       <ShowBeers data={data.beers} options={selectedOption} />
     </>
   );
