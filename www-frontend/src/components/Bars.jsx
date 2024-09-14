@@ -1,6 +1,8 @@
 import { Typography, TextField, Autocomplete } from '@mui/material';
 import useAxios from 'axios-hooks';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import MapComponent from './Maps';
 
 const ShowBars = ({ data, options }) => {
   if (!options) return
@@ -10,7 +12,9 @@ const ShowBars = ({ data, options }) => {
   return (
     <ul>
       {filteredData.map(bar => (
-        <li key={bar.id} style={{ fontSize: 25 }}>{bar.name}, {bar.hop}</li>
+        <li key={bar.id} style={{ fontSize: 25 }}>
+          <Link to={`${bar.id}`}>{bar.name}</Link>
+        </li>
       ))}
     </ul>
   )
@@ -26,7 +30,6 @@ const Bar = () => {
   if (error) return <p>Error loading data.</p>
 
   const barNames = data.bars.map((item) => item.name);
-  console.log(barNames)
 
   return (
     <>
@@ -46,6 +49,9 @@ const Bar = () => {
         sx={{ width: '100%' }}
       />
       <ShowBars data={data.bars} options={selectedOptions} />
+
+      <MapComponent />
+
     </>
   );
 }

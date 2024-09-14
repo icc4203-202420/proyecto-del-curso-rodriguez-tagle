@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Review from './Review';
 
-// Material UI components
 import { Card, CardContent, Typography, Grid2, Box, CircularProgress, Alert, Divider } from '@mui/material';
 
 function ShowBeer() {
@@ -51,13 +50,9 @@ function ShowBeer() {
         }
     }, [brand]);
 
-    if (loading) {
-        return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>;
-    }
+    if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>;
 
-    if (error) {
-        return <Alert severity="error">{error}</Alert>;
-    }
+    if (error) return <Alert severity="error">{error}</Alert>;
 
     return (
         <Card sx={{ maxWidth: 900, mx: 'auto', mt: 4, p: 2 }}>
