@@ -30,14 +30,15 @@ Rails.application.routes.draw do
       end
       resources :brands
       resources :breweries
-      resources :events
+      resources :events do
+        resources :attendances
+      end
       resources :users do
         resources :reviews, only: [:index], action: 'userIndex'
         resources :friendships
+        resources :attendances, only: [:index], action: 'userEvents'
       end
-      
       resources :reviews, only: [:index, :show, :create, :update, :destroy]
     end
   end
-
 end
