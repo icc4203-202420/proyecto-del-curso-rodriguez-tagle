@@ -66,7 +66,7 @@ function ShowBeer() {
                 <Divider sx={{ mb: 2 }} />
 
                 <Grid2 container spacing={2}>
-                    <Grid2 item xs={6}>
+                    <Grid2 item='true' xs={6}>
                         <Typography variant="body1"><strong>Beer Type:</strong> {beer.beer_type}</Typography>
                         <Typography variant="body1"><strong>Style:</strong> {beer.style}</Typography>
                         <Typography variant="body1"><strong>Hop:</strong> {beer.hop}</Typography>
@@ -74,7 +74,7 @@ function ShowBeer() {
                         <Typography variant="body1"><strong>Malts:</strong> {beer.malts}</Typography>
                     </Grid2>
 
-                    <Grid2 item xs={6}>
+                    <Grid2 item='true' xs={6}>
                         <Typography variant="body1"><strong>IBU:</strong> {beer.ibu}</Typography>
                         <Typography variant="body1"><strong>Alcohol:</strong> {beer.alcohol}</Typography>
                         <Typography variant="body1"><strong>BLG:</strong> {beer.blg}</Typography>

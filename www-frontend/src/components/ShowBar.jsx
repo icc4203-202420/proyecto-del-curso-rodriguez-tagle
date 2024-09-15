@@ -57,7 +57,7 @@ function ShowBar() {
             });
     };
     
-    const isAttending = (id) => attendances.includes(id) && ;
+    const isAttending = (id) => attendances.includes(id);
 
     function EventsList( {events} ) {
         return (
@@ -85,7 +85,7 @@ function ShowBar() {
                             <button
                                 onClick={(e) => handleAssistance(e, event.id)}
                                 style={{
-                                    backgroundColor: isAttending(event.id) && ? '#93DC5C' :  '#FF5C5C',
+                                    // backgroundColor: isAttending(event.id) && ? '#93DC5C' :  '#FF5C5C',
                                     color: 'white',
                                     borderRadius: '5px',
                                 }}
