@@ -9,6 +9,11 @@ class API::V1::AttendancesController < ApplicationController
         render json: { attendances: @attendances }, status: :ok
     end
 
+    def show
+        @attendance = Attendance.where(event_id: params[:id])
+        render json: { attendance: @attendance }, status: :ok
+    end
+
     def index
         @attendances = Attendance.where(event_id: params[:event_id])
         render json: { attendances: @attendances }, status: :ok

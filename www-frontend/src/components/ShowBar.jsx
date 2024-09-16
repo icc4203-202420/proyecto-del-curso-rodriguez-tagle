@@ -45,7 +45,8 @@ function ShowBar() {
     const handleAssistance = (event, id) => {
         const data = {
             user_id: user.id,
-            event_id: id
+            event_id: id,
+            checked_in: true
         }
         axiosInstance.post(`/events/${id}/attendances`, data)
             .then((res) => {
