@@ -41,6 +41,7 @@ import Bars from './components/Bars';
 import ShowBar from './components/ShowBar';
 import Beers from './components/Beers';
 import Events from './components/Events';
+import ShowEvent from './components/ShowEvent';
 import Users from './components/Users';
 import ShowBeer from './components/ShowBeer';
 import { Fragment } from 'react';
@@ -183,6 +184,7 @@ function App() {
             <Route path="/beers" element={<Beers />} />
             <Route path="/beers/:id" element={<ShowBeer />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/events/:id" element={<ShowEvent />} />
             <Route path="/users" element={<Users />} />
           </Routes>
         </main>

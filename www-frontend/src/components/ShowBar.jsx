@@ -1,6 +1,6 @@
 import axiosInstance from '../api/axios';
 import { useState, useEffect, Fragment } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 function ShowBar() {
 
@@ -57,21 +57,7 @@ function ShowBar() {
             });
     };
     
-    const isAttending = (id) => attendances.includes(id) && ;
-
-    function EventsList( {events} ) {
-        return (
-            <ul>
-                {events.map((event) => {
-                    <li>
-                        {event.name}
-                    </li>
-                })}
-            </ul>
-        )
-    }
-
-    console.log(events.map((event) => event.name));
+    const isAttending = (id) => attendances.includes(id);
 
     return(
         <Fragment>
@@ -80,24 +66,25 @@ function ShowBar() {
             <ul>
                 {events.map((event) => {
                     
-                    return <li key={event.id}>
+                    return (<li key={event.id}>
                             {event.name}
                             <button
                                 onClick={(e) => handleAssistance(e, event.id)}
                                 style={{
-                                    backgroundColor: isAttending(event.id) && ? '#93DC5C' :  '#FF5C5C',
+                                    backgroundColor: isAttending(event.id) ? '#93DC5C' :  '#FF5C5C',
                                     color: 'white',
                                     borderRadius: '5px',
-                                }}
-                            >
+                                }}>
                                 {isAttending(event.id) ? 'Attending' : 'Check in'}
                             </button>
-                        </li>
+                            <button>
+                                <Link to={`/events/${event.id}`}>Ver</Link>
+                            </button>
+                        </li>)
                     })}
             </ul>
         </Fragment>
-    )
-
+    );
 }
 
 export default ShowBar;
