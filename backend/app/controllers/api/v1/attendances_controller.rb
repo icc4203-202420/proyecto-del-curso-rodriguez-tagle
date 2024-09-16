@@ -2,7 +2,7 @@ class API::V1::AttendancesController < ApplicationController
     # include Authenticable
 
     respond_to :json
-    before_action :set_user
+    before_action :set_user, except: [:show, :index]
 
     def userEvents
         @attendances = Attendance.where(user_id: params[:user_id])
