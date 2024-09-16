@@ -135,7 +135,7 @@ function App() {
   return (
     <>
       {!isAuth? (
-        signUp? (
+        !signUp? (
           <Login signUpHandler={handleSignUp} tokenHandler={handleJWT} />
         ) : (
           <SignUp signUpHandler={handleSignUp} />

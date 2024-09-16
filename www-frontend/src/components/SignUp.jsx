@@ -5,15 +5,18 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Link } from 'react-router-dom';
 import CustomInput from '../assets/Button'
 
-const waveBack = (
-    <svg className='bg-back' id='wave-back' xmlns="http://www.w3.org/2000/svg" width="390" height="588" viewBox="0 0 390 588" preserveAspectRatio='none'>
-      <path d="M0 19.2328C0 19.2328 21.1986 11.198 45.5 5.51497C59.4521 2.25218 74.4269 -0.235429 87 0.0177375C127.346 0.830135 147.164 29.3455 187.5 30.7619C226.328 32.1254 246.678 7.34625 285.5 8.98479C307 9.89223 318.555 21.4027 340 19.2328C360.323 17.1765 390 0.0177375 390 0.0177375V588H0V19.2328Z" fill="#EDB854"/>
+import './Form.css'
+import './SignUp.css'
+
+  const waveBack = (
+    <svg className='bg-back' id='signup-wave-back' xmlns="http://www.w3.org/2000/svg" width="390" height="744" viewBox="0 0 390 744" fill="none" preserveAspectRatio='none'>
+      <path d="M0 24.3354C0 24.3354 21.1986 14.1689 45.5 6.97812C59.4521 2.84969 74.4269 -0.29789 87 0.0224434C127.346 1.05037 147.164 37.131 187.5 38.9232C226.328 40.6485 246.678 9.29526 285.5 11.3685C307 12.5167 318.555 27.0809 340 24.3354C360.323 21.7336 390 0.0224434 390 0.0224434V744H0V24.3354Z" fill="#EDB854"/>
     </svg>
   )
-  
+
   const waveFront = (
-    <svg className='bg-front' id='wave-front' xmlns="http://www.w3.org/2000/svg" width="390" height="588" viewBox="0 -40 390 588" preserveAspectRatio='none'>
-      <path d="M0 18.1862C0 18.1862 21.1986 10.5886 45.5 5.21483C59.4521 2.12961 74.4269 -0.222617 87 0.0167722C127.346 0.784957 147.164 27.7484 187.5 29.0878C226.328 30.3771 246.678 6.94646 285.5 8.49582C307 9.35387 318.555 20.2379 340 18.1862C360.323 16.2418 390 0.0167722 390 0.0167722V556H0V18.1862Z" fill="#C58100"/>
+    <svg className='bg-back' id='signup-wave-front' xmlns="http://www.w3.org/2000/svg" width="390" height="744" viewBox="0 -40 390 744" fill="none" preserveAspectRatio='none'>
+      <path d="M0 24.3354C0 24.3354 21.1986 14.1689 45.5 6.97812C59.4521 2.84969 74.4269 -0.29789 87 0.0224434C127.346 1.05037 147.164 37.131 187.5 38.9232C226.328 40.6485 246.678 9.29526 285.5 11.3685C307 12.5167 318.555 27.0809 340 24.3354C360.323 21.7336 390 0.0224434 390 0.0224434V744H0V24.3354Z" fill="#C58100"/>
     </svg>
   )
 
@@ -47,12 +50,16 @@ function SignUp({ signUpHandler }) {
 
     return(
         <>  
-            <div className='page-title'>Tapp</div>
-            <div className='login-container'>
-                <div className='header'>
+            <div className='form-title' id='signup-title'>Tapp</div>
+            <div className='form-container' id='signup-container'>
+                <div className='form-header' id='signup-header'>
                     Sign Up
                 </div>
-                <div className="content">
+                <div id='signup-body'>
+                  Tell us more about you <br />
+                  Put yor profile information down below
+                </div>
+                <div className="form-content" id='signup-form-content'>
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
@@ -76,66 +83,48 @@ function SignUp({ signUpHandler }) {
                         }}
                     >
                         {({ isSubmitting }) => (
-                            <Form className='login-form'>
-                                <div className="input-fields">
-                                    <div className='login-input-fields'>
-                                        <Field className='login-form-field' id="first_name" name="first_name" placeholder='First Name *' as={CustomInput} />
+                            <Form className='form-fields' id='signup-fields'>
+                                <div className="form-input-fields" id='signup-input-fields'>
+                                        <Field className='login-form-field' id="signup-first_name" name="first_name" placeholder='First Name *' as={CustomInput} />
                                         <ErrorMessage className='signup-error-message' name="first_name" component="div" />
-                                    </div>
 
-                                    <div className='login-input-fields'>
-                                        <Field className='login-form-field' id="last_name" name="last_name" placeholder='Last Name *' as={CustomInput} />
+                                        <Field className='login-form-field' id="signup-last_name" name="last_name" placeholder='Last Name *' as={CustomInput} />
                                         <ErrorMessage className='signup-error-message' name="last_name" component="div" />
-                                    </div>
 
-                                    <div className='login-input-fields'>
-                                        <Field className='login-form-field' id="email" name="email" type="email" placeholder='Email *' as={CustomInput} />
+                                        <Field className='login-form-field' id="signup-email" name="email" type="email" placeholder='Email *' as={CustomInput} />
                                         <ErrorMessage className='signup-error-message' name="email" component="div" />
-                                    </div>
 
-                                    <div className='login-input-fields'>
-                                        <Field className='login-form-field' id="handle" name="handle" placeholder='@handle *' as={CustomInput} />
+                                        <Field className='login-form-field' id="signup-handle" name="handle" placeholder='@handle *' as={CustomInput} />
                                         <ErrorMessage className='signup-error-message' name="handle" component="div" />
-                                    </div>
 
-                                    <div className='login-input-fields'>
-                                        <Field className='login-form-field' id="password" name="password" type="password" placeholder='Password *' as={CustomInput} />
+                                        <Field className='login-form-field' id="signup-password" name="password" type="password" placeholder='Password *' as={CustomInput} />
                                         <ErrorMessage className='signup-error-message' name="password" component="div" />
-                                    </div>
 
-                                    <div className='login-input-fields'>
-                                        <Field className='login-form-field' id="password_confirmation" name="password_confirmation" type="password" placeholder='Confirm Password *' as={CustomInput} />
+                                        <Field className='login-form-field' id="signup-password_confirmation" name="password_confirmation" type="password" placeholder='Confirm Password *' as={CustomInput} />
                                         <ErrorMessage className='signup-error-message' name="password_confirmation" component="div" />
-                                    </div>
 
-                                    <div className='login-input-fields'>
-                                        <Field className='login-form-field' id="line1" name="line1" placeholder='Address ine 1' as={CustomInput} />
+                                        <Field className='login-form-field' id="signup-line1" name="line1" placeholder='Address ine 1' as={CustomInput} />
                                         <ErrorMessage className='signup-error-message' name="line1" component="div" />
-                                    </div>
 
-                                    <div className='login-input-fields'>
-                                        <Field className='login-form-field' id="line2" name="line2" placeholder='Address ine 2' as={CustomInput} />
+                                        <Field className='login-form-field' id="signup-line2" name="line2" placeholder='Address ine 2' as={CustomInput} />
                                         <ErrorMessage className='signup-error-message' name="line2" component="div" />
-                                    </div>
 
-                                    <div className='login-input-fields'>
-                                        <Field className='login-form-field' id="city" name="city" placeholder='City' as={CustomInput} />
+                                        <Field className='login-form-field' id="signup-city" name="city" placeholder='City' as={CustomInput} />
                                         <ErrorMessage className='signup-error-message' name="city" component="div" />
-                                    </div>
                                 </div>
 
-                                <button className='login-submit-button' type="submit" disabled={isSubmitting}>
-                                    Submit
+                                <button className='form-submit-button' id='signup-submit-button' type="submit" disabled={isSubmitting}>
+                                    Sign Up
                                 </button>
                             </Form>
                         )}
                     </Formik>
                 </div>
-                <div className="signup-redirect">
+                <div className="form-redirect" id='login-redirect'>
                     Already have an account? <Link onClick={signUpHandler} >Log in</Link>
                 </div>
             </div>
-            <svg className='bg' viewBox='0 0 390 558' preserveAspectRatio='none'>
+            <svg className='form-bg' id='signup-bg' viewBox='0 0 390 744' preserveAspectRatio='none'>
                 {waveBack}
                 {waveFront}
             </svg>
