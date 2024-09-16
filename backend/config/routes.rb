@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       resources :events do
         resources :attendances
       end
+      resources :attendances
       resources :users do
         resources :reviews, only: [:index], action: 'userIndex'
         resources :friendships

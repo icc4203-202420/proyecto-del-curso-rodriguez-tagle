@@ -1,6 +1,6 @@
 import axiosInstance from '../api/axios';
 import { useState, useEffect, Fragment } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 import './ShowBar.css';
 
@@ -45,7 +45,8 @@ function ShowBar() {
     const handleAssistance = (event, id) => {
         const data = {
             user_id: user.id,
-            event_id: id
+            event_id: id,
+            checked_in: true
         }
         axiosInstance.post(`/events/${id}/attendances`, data)
             .then((res) => {
@@ -58,18 +59,6 @@ function ShowBar() {
     };
     
     const isAttending = (id) => attendances.includes(id);
-
-    function EventsList( {events} ) {
-        return (
-            <ul>
-                {events.map((event) => {
-                    <li>
-                        {event.name}
-                    </li>
-                })}
-            </ul>
-        )
-    }
 
     return(
       <div className='bar-container'>
@@ -94,6 +83,9 @@ function ShowBar() {
                     }}
                   >
                     {isAttending(event.id) ? 'Attending' : 'Check in'}
+                  </button>
+                  <button>
+                    <Link to={`/events/${event.id}`}>Ver</Link>
                   </button>
                 </li>
               </div>
