@@ -30,8 +30,8 @@ const Events = () => {
   const [{ data, loading, error }] = useAxios(barsUrl)
   const [bar, setBar] = useState({})
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error loading data.</p>
+  if (loading) return <div className='axios-state-message' id='loading-message'>Loading...</div>;
+  if (error) return <div className='axios-state-message' id='loading-message'>Error loading data.</div>;
   
   const barsNames = data.bars.map((item) => item.name);
 

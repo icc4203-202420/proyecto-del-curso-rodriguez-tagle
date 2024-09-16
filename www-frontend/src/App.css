@@ -1,7 +1,7 @@
 main {
   /* flex-grow: 1; */
   /* position: relative; */
-  padding-top: 64px;  /* Space for the top AppBar */
+  padding-top: 54px;  /* Space for the top AppBar */
   padding-bottom: 64px; /* Space for the bottom AppBar */
   overflow: hidden; /* Ensures content doesn't overflow the screen */
 }

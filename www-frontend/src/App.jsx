@@ -51,9 +51,10 @@ function App() {
     setOpen(!open);
   }
 
-  const [ token, setToken ] = useLocalStorageState('Tapp/token', {defaultValue: ''});
-  const [ isAuth, setIsAuth ] = useState(false);
-  const [ signUp, setSignUp ] = useState(false);
+  const [ token, setToken ] = useLocalStorageState('Tapp/Session/token', {defaultValue: ''});
+  const [ isAuth, setIsAuth ] = useLocalStorageState('Tapp/Session/isAuth', { defaultValue: false });
+  const [ signUp, setSignUp ] = useLocalStorageState('Tapp/signUp', { defaultValue: false });
+  const [ currentUser, setCurrentUser ] = useLocalStorageState('Tapp/Session/currentUser', { defaultValue: {}});
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -87,9 +88,14 @@ function App() {
     setToken(token);
   }
 
+  const handleCurrentUser = (user) => {
+    setCurrentUser(user);
+  }
+
   const handleLogout = () => {
     setToken('');
     setIsAuth(false);
+    setCurrentUser('');
     navigate('/');
   }
 
@@ -101,41 +107,23 @@ function App() {
     <Drawer open={open} onClose={toggleDrawer}>
       <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer}>
         <List>
-          {!isAuth? (
-            <>
-              <ListItem key={'login'} disablePadding>
-                <ListItemButton component={Link} to={'/login'}>
-                  <ListItemText primary={'Log in'} />
-                </ListItemButton>
-              </ListItem>
-              <ListItem key={'signup'} disablePadding>
-                <ListItemButton component={Link} to={'/signup'}>
-                  <ListItemText primary={'Sign up'} />
-                </ListItemButton>
-              </ListItem>
-            </>
-          ) : (
-            <>
-              <ListItem key={'logout'} disablePadding>
-                <ListItemButton onClick={() => {handleLogout(); toggleDrawer}}>
-                  <ListItemText primary={'Log out'} />
-                </ListItemButton>
-              </ListItem>
-            </>
-          )}
+          <ListItem key={'logout'} disablePadding>
+            <ListItemButton onClick={() => {handleLogout(); toggleDrawer}}>
+              <ListItemText primary={'Log out'} />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Box>
     </Drawer>
   )
   
   const handleSearch = () => {}
-  console.log(signUp);
 
   return (
     <>
       {!isAuth? (
         !signUp? (
-          <Login signUpHandler={handleSignUp} tokenHandler={handleJWT} />
+          <Login signUpHandler={handleSignUp} currentUserHandler={handleCurrentUser} tokenHandler={handleJWT} />
         ) : (
           <SignUp signUpHandler={handleSignUp} />
         )
@@ -177,7 +165,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/login" element={<Login tokenHandler={handleJWT} />} />
+            <Route path="/login" element={<Login signUpHandler={handleSignUp} tokenHandler={handleJWT} currentUserHandler={handleCurrentUser} />} />
             <Route path="/bars" element={<Bars />} />
             <Route path="/bars/:id" element={<ShowBar />} />
             <Route path="/beers" element={<Beers />} />

@@ -8,6 +8,8 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Autocomplete from "@mui/material/Autocomplete";
 
+import './Maps.css'
+
 const MapComponent = () => {
     
     const mapRef = useRef(null);
@@ -115,10 +117,12 @@ const MapComponent = () => {
     };
 
     return(
-    <>
-        <FreeSolo />
-        <div ref={mapRef} style={{ width: '50vw', height: '80vh' }} />
-    </>
+      <div className='map-container'>
+        <div className='map-search-field'>
+            <FreeSolo />
+        </div>
+        <div className='map-view' ref={mapRef} />
+      </div>
     );
 };
 

@@ -30,7 +30,7 @@ const validationSchema = yup.object({
 
 function ReviewForm({ beerId }) {
   const { id } = useParams();
-  const user_id = JSON.parse(localStorage.getItem('currentUser')).id;
+  const user_id = JSON.parse(localStorage.getItem('Tapp/Session/currentUser')).id;
 
   const reviewsReducer = (state, action) => {
     switch (action.type) {

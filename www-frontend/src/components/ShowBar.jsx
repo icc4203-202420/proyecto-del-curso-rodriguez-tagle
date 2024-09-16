@@ -2,18 +2,19 @@ import axiosInstance from '../api/axios';
 import { useState, useEffect, Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 
+import './ShowBar.css';
+
 function ShowBar() {
 
     const { id } = useParams();
-    const [bar, setBar] = useState([]);
-    const [events, setEvents] = useState([]);
-    const [attendances, setAttendances] = useState([]);
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
+    const [ bar, setBar ] = useState([]);
+    const [ events, setEvents ] = useState([]);
+    const [ attendances, setAttendances ] = useState([]);
+    const [ user, setUser ] = useState(JSON.parse(localStorage.getItem('Tapp/Session/currentUser')));
 
     useEffect(() => {
         axiosInstance.get(`/bars/${id}`)
             .then((res) => {
-                console.log(res.data.bar);
                 setBar(res.data.bar);
             })
             .catch((error) => {
@@ -24,7 +25,6 @@ function ShowBar() {
     useEffect(() => {
         axiosInstance.get(`/bars/${id}/events`)
             .then((res) => {
-                console.log(res.data.events);
                 setEvents(res.data.events);
             })
             .catch((error) => {
@@ -49,7 +49,7 @@ function ShowBar() {
         }
         axiosInstance.post(`/events/${id}/attendances`, data)
             .then((res) => {
-                console.log(res.data);
+
                 setAttendances([...attendances, id]);
             })
             .catch((error) => {
@@ -71,31 +71,36 @@ function ShowBar() {
         )
     }
 
-    console.log(events.map((event) => event.name));
-
     return(
-        <Fragment>
-            <h1>{bar.name}</h1>
-            <h2>Events</h2>
-            <ul>
-                {events.map((event) => {
-                    
-                    return <li key={event.id}>
-                            {event.name}
-                            <button
-                                onClick={(e) => handleAssistance(e, event.id)}
-                                style={{
-                                    // backgroundColor: isAttending(event.id) && ? '#93DC5C' :  '#FF5C5C',
-                                    color: 'white',
-                                    borderRadius: '5px',
-                                }}
-                            >
-                                {isAttending(event.id) ? 'Attending' : 'Check in'}
-                            </button>
-                        </li>
-                    })}
-            </ul>
-        </Fragment>
+      <div className='bar-container'>
+        <div className='bar-name'>
+          {bar.name}
+        </div>
+        <div className='bar-events-header'>
+          Events:
+        </div>
+        <ul>
+          {events.map((event) => {
+            return(
+              <div className="event-item">
+                <li key={event.id}>
+                  {event.name}
+                  <button
+                    onClick={(e) => handleAssistance(e, event.id)}
+                    style={{
+                      backgroundColor: isAttending(event.id)? '#93DC5C' :  '#FF5C5C',
+                      color: 'white',
+                      borderRadius: '5px',
+                    }}
+                  >
+                    {isAttending(event.id) ? 'Attending' : 'Check in'}
+                  </button>
+                </li>
+              </div>
+            )}
+          )};
+        </ul>
+      </div>
     )
 
 }

@@ -3,9 +3,11 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Review from './Review';
 
-import { Card, CardContent, Typography, Grid2, Box, CircularProgress, Alert, Divider } from '@mui/material';
+import { Rating, Typography, Grid2, Box, CircularProgress, Alert, Divider } from '@mui/material';
 
-function ShowBeer() {
+import './ShowBeer.css'
+
+function ShowBeer({ beersWithBrands }) {
     const { id } = useParams();
     const [beer, setBeer] = useState({});
     const [brand, setBrand] = useState({});
@@ -26,16 +28,16 @@ function ShowBeer() {
             });
     }, [id]);
 
-    useEffect(() => {        
-        if (beer.brand_id) {
-            axiosInstance.get(`/brands/${beer.brand_id}`)
-                .then((res) => {
-                    setBrand(res.data.brand);
-                })
-                .catch((error_brands) => {
-                    setError('Error loading brand data');
-                });
-        }
+    useEffect(() => {
+      if (beer.brand_id) {
+          axiosInstance.get(`/brands/${beer.brand_id}`)
+              .then((res) => {
+                  setBrand(res.data.brand);
+              })
+              .catch((error_brands) => {
+                  setError('Error loading brand data');
+              });
+      }
     }, [beer]);
 
     useEffect(() => {
@@ -55,38 +57,49 @@ function ShowBeer() {
     if (error) return <Alert severity="error">{error}</Alert>;
 
     return (
-        <Card sx={{ maxWidth: 900, mx: 'auto', mt: 4, p: 2 }}>
-            <CardContent>
-                <Typography variant="h3" gutterBottom>
-                    {beer.name}
-                </Typography>
-                <Typography variant="h5" color="textSecondary" gutterBottom>
-                    {brand.name}
-                </Typography>
-                <Divider sx={{ mb: 2 }} />
+      <div className="beer-container">
+        {/* <div className="app-bar-title">
+          {brand.name} - {beer.name}
+        </div> */}
+        <div className='beer-name'>
+          {brand.name} - {beer.name}
+        </div>
+        <div className="beer-top">
+          <div className="beer-img">
+            <img src="" alt="img" />
+          </div>
+          <div className="beer-items">
+            
+              <Grid2 item='true' xs={6}>
+                <Typography variant="body1"><strong>Beer Type:</strong> {beer.beer_type}</Typography>
+                <Typography variant="body1"><strong>Style:</strong> {beer.style}</Typography>
+                <Typography variant="body1"><strong>Hop:</strong> {beer.hop}</Typography>
+                <Typography variant="body1"><strong>Yeast:</strong> {beer.yeast}</Typography>
+                <Typography variant="body1"><strong>Malts:</strong> {beer.malts}</Typography>
+                <Typography variant="body1"><strong>IBU:</strong> {beer.ibu}</Typography>
+                <Typography variant="body1"><strong>Alcohol:</strong> {beer.alcohol}</Typography>
+                <Typography variant="body1"><strong>BLG:</strong> {beer.blg}</Typography>
+                <Typography variant="body1"><strong>Brewery:</strong> {brewery.name}</Typography>
+              </Grid2>
+          </div>
+        </div>
+        <div className="avg-rating">
+          <div className="rating-header">
+            Average rating:
+          </div>
+          <Rating className='rating-stars' value={beer.avg_rating} precision={0.5} readOnly />
+          <div className="rating-value">
+            {beer.avg_rating}
+          </div>
+        </div>
+        <div className="beer-description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </div>
 
-                <Grid2 container spacing={2}>
-                    <Grid2 item='true' xs={6}>
-                        <Typography variant="body1"><strong>Beer Type:</strong> {beer.beer_type}</Typography>
-                        <Typography variant="body1"><strong>Style:</strong> {beer.style}</Typography>
-                        <Typography variant="body1"><strong>Hop:</strong> {beer.hop}</Typography>
-                        <Typography variant="body1"><strong>Yeast:</strong> {beer.yeast}</Typography>
-                        <Typography variant="body1"><strong>Malts:</strong> {beer.malts}</Typography>
-                    </Grid2>
 
-                    <Grid2 item='true' xs={6}>
-                        <Typography variant="body1"><strong>IBU:</strong> {beer.ibu}</Typography>
-                        <Typography variant="body1"><strong>Alcohol:</strong> {beer.alcohol}</Typography>
-                        <Typography variant="body1"><strong>BLG:</strong> {beer.blg}</Typography>
-                        <Typography variant="body1"><strong>Average Rating:</strong> {beer.avg_rating}</Typography>
-                        <Typography variant="body1"><strong>Brewery:</strong> {brewery.name}</Typography>
-                    </Grid2>
-                </Grid2>
-
-                <Divider sx={{ my: 2 }} />
-                <Review beerId={id} />
-            </CardContent>
-        </Card>
+          <Divider sx={{ my: 2 }} />
+          <Review beerId={id} />
+      </div>
     );
 }
 

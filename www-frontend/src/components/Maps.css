@@ -1,0 +1,13 @@
+.map-container {
+  height: auto;
+  width: auto;
+}
+
+.map-search-field {
+  width: 10px;
+}
+
+.map-view {
+  height: 50vh;
+  width: auto;
+}

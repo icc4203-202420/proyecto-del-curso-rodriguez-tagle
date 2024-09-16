@@ -120,10 +120,15 @@
 }
 
 .form-redirect {
-  color: #E8AC65;
+  color:#E8AC65;
   font-family: "Montserrat Alternates";
   font-size: 15px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+}
+
+.form-redirect-link {
+  text-decoration: none;
+  color: #F1DCA7;
 }

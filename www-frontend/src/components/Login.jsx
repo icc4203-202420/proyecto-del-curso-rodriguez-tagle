@@ -33,19 +33,8 @@ const initialValues = {
     password: '',
 };
 
-function Login({ signUpHandler, tokenHandler }) {
+function Login({ signUpHandler, tokenHandler, currentUserHandler }) {
   const navigation = useNavigate();
-  const [ signup, setSignup ] = useState(false);
-
-  useEffect(() => {
-    if (signup) {
-      navigation('/signup');
-    }
-  }, [signup])
-
-  const handleSignup = () => {
-    setSignup(true);
-  }
   
   return(
     <>
@@ -66,7 +55,10 @@ function Login({ signUpHandler, tokenHandler }) {
                         axiosInstance.post('/login', {"user": values})
                         .then((res) => {
                           tokenHandler(res.headers.authorization);
-                          localStorage.setItem('currentUser', JSON.stringify(res.data.status.data.user));
+                          console.log(res.data.status.data.user);
+                          const currentUser = res.data.status.data.user;
+                          console.log(currentUser);
+                          currentUserHandler(currentUser);
                           navigation('/');
                         })
                         .catch((error) => {
@@ -101,7 +93,7 @@ function Login({ signUpHandler, tokenHandler }) {
           </Formik>
         </div>
         <div className="form-redirect" id='signup-redirect'>
-          Don't have an account? <Link onClick={signUpHandler} >Sign up</Link>
+          Don't have an account? <Link className='form-redirect-link' onClick={signUpHandler} >Sign up</Link>
         </div>
       </div>
       <svg className='form-bg' id='login-bg' viewBox='0 0 390 588' preserveAspectRatio='none'>

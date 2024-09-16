@@ -1,59 +1,81 @@
-/* eslint-disable react/prop-types */
 import { Typography, TextField, Autocomplete } from '@mui/material';
 import useAxios from 'axios-hooks';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const ShowBeers = ({ data, options }) => {
-  if (!options) return
+import './Beers.css'
+import { Fragment } from 'react';
 
-  const filteredData = data.filter(beer => options.includes(beer.name))
+const ShowBeers = ({ beersData, options }) => {
+if (!options) {
+    return (
+      <ul className='beers-list'>
+        {beersData.map(beer => (
+          <li className='beers-list-item' key={beer.id}>
+            <Link to={`${beer.id}`}>{beer.name}, {beer.brand.name}</Link>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  const filteredData = beersData.filter(beer => options.includes(beer.name))
+  console.log(options);
 
   return (
-    <ul>
-      {filteredData.map(beer => (
-        <li key={beer.id} style={{ fontSize: 25 }}>
-          <Link to={`${beer.id}`}>{beer.name}, {beer.hop}</Link>
-        </li>
-      ))}
-    </ul>
+    <Fragment>
+      <ul className='beers-list'>
+        {filteredData.map(beer => (
+          <li className='beers-list-item' key={beer.id}>
+            <Link to={`${beer.id}`}>{beer.name}, {beer.brand.name}</Link>
+          </li>
+        ))}
+      </ul>
+    </Fragment>
   )
 }
 
-const Beer = () => {
-  const apiUrl = 'http://localhost:3001/api/v1/beers'
+const Beers = () => {
+  const beersUrl = 'http://localhost:3001/api/v1/beers'
+  const brandsUrl = 'http://localhost:3001/api/v1/brands'
 
-  const [{ data, loading, error }] = useAxios(apiUrl);
-  const [selectedOption, setSelectedOptions] = useState('')
+  const [{ data: beersData, loading: beersLoading, error: beersError }] = useAxios(beersUrl);
+  const [{ data: brandsData, loading: brandsLoading, error: brandsError }] = useAxios(brandsUrl);
+  const [selectedOption, setSelectedOptions] = useState('');
   
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading data.</p>
+  if (beersLoading || brandsLoading) return <div className='axios-state-message' id='loading-message'>Loading...</div>;
+  if (beersError || brandsError) return <div className='axios-state-message' id='error-message'>Error loading data.</div>;
 
-  const beerNames = data.beers.map((item) => item.name);
+  const beersWithBrands = beersData.beers.map(beer => ({
+    ...beer,
+    brand: brandsData.brands.find(brand => brand.id === beer.brand_id)
+  }));
+
+  const beerNames = beersData.beers.map((item) => item.name);
   const uniqueBeerNames = Array.from(new Set(beerNames));
 
   return (
-    <>
-      <div>
-      <Typography variant="h1" color="#C58100" component="div">
-        Beers
-      </Typography>
+    <div className='beers-container'>
+      <div className='beers-title'>
+        <Typography variant="h1" color="#C58100" component="div">
+          Beers
+        </Typography>
       </div>
       <div>
-      <Autocomplete
-        value={selectedOption}
-        onChange={(event, newValue) => { setSelectedOptions(newValue) }}
-        options={uniqueBeerNames}
-        getOptionLabel={(option) =>  option}
-        renderInput={(params) => (
-          <TextField {...params} label="Search" placeholder="Beer name" />
-        )}
-        sx={{ width: '100%' }}
-      />
+        <Autocomplete
+          value={selectedOption}
+          onChange={(event, newValue) => { setSelectedOptions(newValue) }}
+          options={uniqueBeerNames}
+          getOptionLabel={(option) =>  option}
+          renderInput={(params) => (
+            <TextField {...params} label="Search" placeholder="Beer name" />
+          )}
+          sx={{ width: '100%' }}
+        />
       </div>
-      <ShowBeers data={data.beers} options={selectedOption} />
-    </>
+      <ShowBeers beersData={beersWithBrands} options={selectedOption} />
+    </div>
   );
 }
 
-export default Beer;
+export default Beers;

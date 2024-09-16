@@ -121,7 +121,7 @@ function SignUp({ signUpHandler }) {
                     </Formik>
                 </div>
                 <div className="form-redirect" id='login-redirect'>
-                    Already have an account? <Link onClick={signUpHandler} >Log in</Link>
+                    Already have an account? <Link className='form-redirect-link' onClick={signUpHandler} >Log in</Link>
                 </div>
             </div>
             <svg className='form-bg' id='signup-bg' viewBox='0 0 390 744' preserveAspectRatio='none'>
