@@ -4,6 +4,13 @@ import { useParams, Link } from 'react-router-dom';
 
 import './ShowBar.css';
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const day = date.toLocaleDateString('en-US', { day: 'numeric' });
+  const month = date.toLocaleDateString('en-US', { month: 'short' });
+  return { day, month };
+};
+
 function ShowBar() {
 
     const { id } = useParams();
@@ -68,30 +75,43 @@ function ShowBar() {
         <div className='bar-events-header'>
           Events:
         </div>
-        <ul>
+        <div className='bar-events-list'>
           {events.map((event) => {
+            const { day, month } = formatDate(event.date);
             return(
-              <div className="event-item">
-                <li key={event.id}>
-                  {event.name}
+              <div className="event-list-item">
+                <div className="event-container">
+                  <div className="event-fields">
+                    <div className="event-name">
+                      {event.name}
+                    </div>
+                    <div className="event-desc">
+                      {event.description}
+                    </div>
+                  </div>
+                  <div className="event-date">
+                    <div className="event-day">{day}</div>
+                    <div className="event-month">{month}</div>
+                  </div>
+                </div>
+                <div className="event-buttons-container">
                   <button
+                    className='event-check-in-button'
                     onClick={(e) => handleAssistance(e, event.id)}
                     style={{
                       backgroundColor: isAttending(event.id)? '#93DC5C' :  '#FF5C5C',
-                      color: 'white',
-                      borderRadius: '5px',
                     }}
                   >
                     {isAttending(event.id) ? 'Attending' : 'Check in'}
                   </button>
-                  <button>
-                    <Link to={`/events/${event.id}`}>Ver</Link>
+                  <button className='event-redirect-button'>
+                    <Link className='event-redirect-link' to={`/events/${event.id}`}>Take a look</Link>
                   </button>
-                </li>
+                </div>
               </div>
             )}
-          )};
-        </ul>
+          )}
+        </div>
       </div>
     )
 
