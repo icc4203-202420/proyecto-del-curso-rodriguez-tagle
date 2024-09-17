@@ -2,6 +2,22 @@ import axiosInstance from '../api/axios';
 import { useState, useEffect, Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 
+import './ShowEvent.css'
+
+const formatDate = (dateString) => {
+  if (dateString) {
+    const date = new Date(dateString);
+    const day = date.toLocaleDateString('en-US', { day: 'numeric' });
+    const month = date.toLocaleDateString('en-US', { month: 'long'});
+    const hours = date.toLocaleTimeString('en-US', { hour: '2-digit', hour12: false});
+    const minutes = date.toLocaleTimeString('en-US', { minute: '2-digit'});
+    return `${month} ${day}, ${hours}:${minutes}`
+  }
+  else {
+    return 'Loading...'
+  }
+};
+
 function ShowEvent() {
     const { id } = useParams();
     const [event, setEvent] = useState({});
@@ -58,32 +74,46 @@ function ShowEvent() {
 
     }, [allUsers, friends, attendants]);
 
+    const date = formatDate(event.date)
+
     return (
-        <Fragment>
-            <h1>{event.name}</h1>
-            <p>{event.date}</p>
-            <p>{event.description}</p>
-            {friendNames.length > 0 && (
-                <div>
-                    <h2>Friends Attending:</h2>
-                    <ul>
-                        {friendNames.map(friend => (
-                            <li key={friend.id}>{friend.first_name} {friend.last_name} - @{friend.handle}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-            {otherAttendees.length > 0 && (
-                <div>
-                    <h2>Other People Attending:</h2>
-                    <ul>
-                        {otherAttendees.map(person => (
-                            <li key={person.id}>{person.first_name} {person.last_name} - @{person.handle}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-        </Fragment>
+      <div className='show-event-container'>
+        <div className='show-event-name'>
+          {event.name}
+        </div>
+        <div className='show-event-date'>
+          {date}
+        </div>
+        <div className='show-event-desc'>
+          {event.description}
+        </div>
+        <div className="show-event-attendees">
+          {friendNames.length > 0 && (
+            <div className='show-event-friends'>
+              <div className='friends-header'>Friends Attending:</div>
+              <div className="show-event-friends-list">
+                <ul>
+                  {friendNames.map(friend => (
+                    <li key={friend.id}>{friend.first_name} {friend.last_name} - @{friend.handle}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+          {otherAttendees.length > 0 && (
+            <div className="show-event-other">
+              <div className='show-event-other-header'>People Attending:</div>
+              <div className='show-event-other-list'>
+                <ul>
+                    {otherAttendees.map(person => (
+                      <li key={person.id}>{person.first_name} {person.last_name} - @{person.handle}</li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     );
 }
 

@@ -153,9 +153,9 @@ function App() {
               <IconButton color="inherit" component={Link} to='/bars'>
                 <Storefront style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
               </IconButton>
-              <IconButton color="inherit" component={Link} to='/events'>
+              {/* <IconButton color="inherit" component={Link} to='/events'>
                 <Campaign style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
-              </IconButton>
+              </IconButton> */}
               <IconButton color="inherit" component={Link} to='/users'>
                 <PersonSearch style={{ fill: 'rgba(255, 255, 255, 0.75' }} />
               </IconButton>
