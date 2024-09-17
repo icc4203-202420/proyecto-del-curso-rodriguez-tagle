@@ -55,4 +55,9 @@ if Rails.env.development?
   Beer.all.each do |beer|
     FactoryBot.create_list(:review, 5, beer: beer)
   end
+
+  Bar.create(name: 'Krossbar Mall Sport', latitude: -33.3706441, longitude: -70.5069834)
+  Bar.create(name: 'Gracielo Bar', latitude: -33.426755, longitude: -70.6194854)
+  Bar.create(name: 'El Honesto Mike Los Leones', latitude: -33.4207783, longitude: -70.6052695)  
+  
 end

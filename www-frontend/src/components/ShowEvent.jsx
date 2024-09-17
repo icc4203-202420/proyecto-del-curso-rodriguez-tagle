@@ -11,8 +11,8 @@ function ShowEvent() {
     const [friendNames, setFriendNames] = useState([]);
     const [otherAttendees, setOtherAttendees] = useState([]);
 
-    const user = JSON.parse(localStorage.getItem('currentUser'));
-    const token = localStorage.getItem('Tapp/token').replace(/['"]+/g, '').replace('Bearer ', '');
+    const user = JSON.parse(localStorage.getItem('Tapp/Session/currentUser'));
+    const token = localStorage.getItem('Tapp/Session/token').replace(/['"]+/g, '').replace('Bearer ', '');
 
     useEffect(() => {
         axiosInstance.get(`/users`)

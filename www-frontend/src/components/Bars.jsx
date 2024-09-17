@@ -1,75 +1,68 @@
-import { Typography, TextField, Autocomplete, Button } from '@mui/material';
+import React, { useState } from 'react';
 import useAxios from 'axios-hooks';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MapComponent from './Maps';
-
-import './Bars.css'
+import './Bars.css';
+import { Autocomplete } from '@mui/material'; // Usaremos Autocomplete de Material UI
+import TextField from '@mui/material/TextField'; // Usaremos TextField para el input
 
 const ShowBars = ({ data, option }) => {
-  if (!option) return (
-    <ul>
-      {data.map(bar => (
-        <li key={bar.id}>
-          <Link to={`${bar.id}`}>{bar.name}</Link>
+  const filteredData = option
+    ? data.filter(bar => bar.name.includes(option))
+    : data;
+
+  return (
+    <ul className="bars-list">
+      {filteredData.map(bar => (
+        <li key={bar.id} className="bars-item">
+          <Link to={`${bar.id}`} className="bars-link">{bar.name}</Link>
         </li>
       ))}
     </ul>
-  )
-
-  else if (option) {
-    const filteredData = data.filter(bar => option.includes(bar.name))
-    
-    return (
-      <ul>
-        {filteredData.map(bar => (
-          <li key={bar.id}>
-            <Link to={`${bar.id}`}>{bar.name}</Link>
-          </li>
-        ))}
-      </ul>
-    )
-  }
-}
+  );
+};
 
 const Bar = () => {
-  const apiUrl = 'http://localhost:3001/api/v1/bars'
-
+  const apiUrl = 'http://localhost:3001/api/v1/bars';
   const [{ data, loading, error }] = useAxios(apiUrl);
-  const [ selectedOption, setSelectedOption ] = useState('');
-  const [ map, setMap ] = useState(false);
-  
-  if (loading) return <div className='axios-state-message' id='loading-message'>Loading...</div>;
-  if (error) return <div className='axios-state-message' id='loading-message'>Error loading data.</div>;
+  const [selectedOption, setSelectedOption] = useState('');
+  const [isMapVisible, setIsMapVisible] = useState(false);
 
-  const barNames = data.bars.map((item) => item.name);
+  if (loading) return <div className="axios-state-message">Loading...</div>;
+  if (error) return <div className="axios-state-message">Error loading data.</div>;
 
-  const handleMap = () => {
-    setMap(!map)
-  }
+  const barNames = data?.bars?.map(item => item.name) || [];
+
+  const toggleMap = () => {
+    setIsMapVisible(!isMapVisible);
+  };
 
   return (
-    <div className='bars-container'>
-      <div className="bars-title">
-        <Typography variant="h1" color="#C58100" component="div">
-          Bars
-        </Typography>
-      </div>
-      <Button onClick={handleMap}>View {map ? 'list' : 'map'}</Button>
+    <div className="bars-container">
+      <div className="bars-title">Bars</div>
+      <button onClick={toggleMap} className="bars-toggle-button">
+        View {isMapVisible ? 'list' : 'map'}
+      </button>
+
       <div className="bars-content">
-        {map? (
+        {isMapVisible ? (
           <MapComponent />
         ) : (
-          <div className='bars-list-container'>
+          <div className="bars-list-container">
             <Autocomplete
+              freeSolo
+              options={barNames} // Lista de nombres de bares
               value={selectedOption}
-              onChange={(event, newValue) => { setSelectedOption(newValue) }}
-              options={barNames}
-              getOptionLabel={(option) => option}
+              onInputChange={(event, newInputValue) => setSelectedOption(newInputValue)} // Manejar el cambio de input
               renderInput={(params) => (
-                <TextField {...params} label="Search" placeholder="Bar name" />
+                <TextField
+                  {...params}
+                  label="Search for a bar"
+                  className="bars-search"
+                  variant="outlined"
+                  fullWidth
+                />
               )}
-              sx={{ width: '100%' }}
             />
             <ShowBars data={data.bars} option={selectedOption} />
           </div>
@@ -77,6 +70,6 @@ const Bar = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Bar;
