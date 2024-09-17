@@ -1,5 +1,5 @@
 import axiosInstance from '../api/axios';
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import './ShowEvent.css'
@@ -90,7 +90,7 @@ function ShowEvent() {
         <div className="show-event-attendees">
           {friendNames.length > 0 && (
             <div className='show-event-friends'>
-              <div className='friends-header'>Friends Attending:</div>
+              <div className='show-event-friends-header'>Friends Attending:</div>
               <div className="show-event-friends-list">
                 <ul>
                   {friendNames.map(friend => (

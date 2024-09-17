@@ -1,11 +1,19 @@
-import Typography from '@mui/material/Typography'
-
+import './Home.css';
+import cooking from '../assets/maintenance';
 
 const HomePage = () => {
   return (
-    <Typography variant="h1" color="#C58100" component="div">
-      Home
-    </Typography>
+    <>
+      <div className="home-title">Home</div>
+
+
+      <div className="icon-container">
+        <div className='maintenance-icon'>
+          {cooking}
+        </div>
+          Sorry, this page is under construction.
+      </div>
+    </>
   );
 }
 
