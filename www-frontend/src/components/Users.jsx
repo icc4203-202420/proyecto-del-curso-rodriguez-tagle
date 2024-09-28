@@ -2,51 +2,57 @@ import { TextField, Typography } from '@mui/material';
 import useAxios from 'axios-hooks';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import './Users.css';
+import addFriend from '../assets/AddFriend';
 
-/* 
-TODO:
-Componente(s) para la interfaz que permite buscar usuarios por su handle.
-Basta la interfaz para ingresar el string de búsqueda.
-No es encesario implementar llamadas a la API aún.
-*/
+const ShowUsers = ({ data, option }) => {
+  const filteredData = option
+    ? data.filter(user => user.handle.toLowerCase().includes(option.toLowerCase()))
+    : data;
+
+  return (
+    <ul className='users-list'>
+      {filteredData.map(user => (
+        <li key={user.id} className='users-item'>
+          <div className='users-name'>{user.handle}</div> <div className='addFriend' onClick={() => console.log("Added", `${user.handle}`, "to your friend list")}>{addFriend}</div>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 const Users = () => {
   const apiUrl = 'http://localhost:3001/api/v1/users'
   const [{ data, loading, error }] = useAxios(apiUrl);
-  const [handle, setHandle] = useState('')
-  
-  useEffect(() => {
-    const userUrl = `http://localhost:3001/api/v1/users/${handle}`
-    const fetchUser = async () => {
-      const response = await axios.get(userUrl)
-      
-    }
-    fetchUser()
-    return
-  }, [handle])
+  const [selectedOption, setSelectedOption] = useState('');
+  const [handle, setHandle] = useState('');
 
   if (loading) return <div className='axios-state-message' id='loading-message'>Loading...</div>;
   if (error) return <div className='axios-state-message' id='loading-message'>Error loading data.</div>;
 
+  const handleInputChange = (e) => {
+    setSelectedOption(e.target.value);
+  }
 
   return (
-    <>
-      <Typography variant="h1" color="#C58100" component="div">
-        Users
-      </Typography>
-      <TextField
-        id="search"
-        label="User handle"
-        variant='outlined'
-        // value={handle}
-        onChange={value => setHandle(value)}
-      />
-      {/* <ul>
-        {data.users.map(user => (
-          <li key={user.id} style={{ fontSize: 25 }}>{`${user.first_name} ${user.last_name}`}</li>
-        ))}
-      </ul> */}
-    </>
+    <div className='users-container'>
+      <div className='users-title'>Users</div>
+
+      <div className='users-content'>
+        <div className='users-list-container'>
+          <input
+              type="text"
+              className="users-search"
+              placeholder="Search a @user"
+              value={selectedOption}
+              onChange={handleInputChange}
+          />
+          <ShowUsers data={data?.users || []} option={selectedOption} />
+        </div>
+
+      </div>
+
+    </div>
   );
 }
 
