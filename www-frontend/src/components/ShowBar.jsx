@@ -79,7 +79,7 @@ function ShowBar() {
           {events.map((event) => {
             const { day, month } = formatDate(event.date);
             return(
-              <div className="event-list-item">
+              <div className="event-list-item" key={event.id}>
                 <div className="event-container">
                   <div className="event-fields">
                     <div className="event-name">

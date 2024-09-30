@@ -23,6 +23,17 @@
   background-clip: text;
 }
 
+.users-search {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1.5px solid #C58100;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  outline: none;
+}
+
 .bars-toggle-button {
   background-color: #C58100;
   color: #fff;
@@ -77,4 +88,22 @@
   font-size: 18px;
   color: #C58100;
   margin: 20px 0;
+}
+
+.search-map {
+  width: 100%;
+  max-width: 300px;
+  position: relative;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-map div {
+  position: absolute;
+  right: 0px;
+  cursor: pointer;
+  top: 40%;
+  transform: translateY(-50%);
 }
