@@ -31,6 +31,7 @@ function ShowEvent() {
     const [flyerUrls, setFlyerUrls] = useState([]);
     const [flyerData, setFlyerData] = useState([]);
     const [date, setDate] = useState('Loading...(state)');
+    const [imageTags, setImageTags] = useState('')
 
     const user = JSON.parse(localStorage.getItem('Tapp/Session/currentUser'));
     const token = localStorage.getItem('Tapp/Session/token').replace(/['"]+/g, '').replace('Bearer ', '');
@@ -152,7 +153,20 @@ function ShowEvent() {
         })
         .catch(err => console.error('Error processing images:', err));
     };
-    
+
+    const handleTags = (index) => {
+      axiosInstance.post(`/events/${id}/event_pictures/${index}/tags`, {
+        event_picture_id: index,
+        user_id: user.id,
+        tagged_user_id: 1}
+      )
+        .then(res => {
+          const imageTags = res.data.tags;
+          const tagsString = JSON.stringify(imageTags.filter(tag => tag.event_picture_id === index), null, 2);
+          setImageTags(tagsString);
+          
+        })
+    }
 
     if (!event) {
       return <div>Loading...</div>;
@@ -205,6 +219,11 @@ function ShowEvent() {
                       @{allUsers.find((user) => user.id === flyerData[index].user_id)?.handle}
                     </div>
                     <img key={index} src={url} alt={`${event.name} flyer ${index + 1}`} />
+                    <div className='tag-button'>
+                      <form onSubmit={handleTags(index+1)}></form>
+                      <button onClick={() => handleTags(index+1)}>Tag user</button>
+                      {imageTags}
+                    </div>
                     <div style={{color: 'black'}} className='flyer-footer'>{flyerData[index].description}</div>
                     <br />
                   </div>

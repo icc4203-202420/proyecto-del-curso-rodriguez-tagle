@@ -33,7 +33,9 @@ Rails.application.routes.draw do
       resources :tags
       resources :events do
         resources :attendances
-        resources :event_pictures
+        resources :event_pictures do
+          resources :tags
+        end
       end
       resources :attendances
       resources :users do
