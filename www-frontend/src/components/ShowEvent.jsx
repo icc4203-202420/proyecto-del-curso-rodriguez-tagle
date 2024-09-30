@@ -59,7 +59,7 @@ function ShowEvent() {
               }
             })
             .catch(error => console.error('Error loading event data:', error));
-    }, [id]);
+    }, [id, file]);
 
     useEffect(() => {
       console.log('flyerData updated:', flyerData);
@@ -139,8 +139,11 @@ function ShowEvent() {
             alert('Images uploaded successfully');
             setFlyerUrls(res.data.event.flyer_urls);
             axiosInstance.get(`/events/${id}/event_pictures`)
-            
-            
+              .then(res2 => {
+                const event_pictures_data = res2.data.event_pictures;
+                setFlyerData([...event_pictures_data]);
+              })
+              .catch(error => console.error('Error loading event pictures data:', error));
           })
           .catch(error => {
             console.error('Error uploading images:', error);
@@ -196,8 +199,8 @@ function ShowEvent() {
           <div className='show-event-flyer'>
             <h2 style={{ color: 'black' }}>Event Flyers</h2>
             {flyerUrls.map((url, index) => (
-                flyerData.length > 0 && (
-                  <div className='flyer'>
+                flyerData.length > index && flyerData[index] && (
+                  <div className='flyer' key={index}>
                     <div style={{color: 'black'}} className='flyer-header'>
                       @{allUsers.find((user) => user.id === flyerData[index].user_id)?.handle}
                     </div>
