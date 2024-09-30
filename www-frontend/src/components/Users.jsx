@@ -39,10 +39,14 @@
       {filteredData.map(user => (
         <li key={user.id} className='users-item'>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <div className='users-name'>@{user.handle}</div> 
 =======
           <div className='users-name'>{user.handle}</div> 
 >>>>>>> 2a99073 (feat: implemented user friendships button)
+=======
+          <div className='users-name'>@{user.handle}</div> 
+>>>>>>> fe5f6cc (style: Bars input styled)
           <div>
             {friends.includes(user.id) ? ( <div>{Friend}</div> ) : ( <div  className='addFriend' onClick={() => togglePopUp(user.id) }>{addFriend}</div> )}
           </div>
