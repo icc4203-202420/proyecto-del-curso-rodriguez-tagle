@@ -38,7 +38,7 @@
       <ul className='users-list'>
       {filteredData.map(user => (
         <li key={user.id} className='users-item'>
-          <div className='users-name'>{user.handle}</div> 
+          <div className='users-name'>@{user.handle}</div> 
           <div>
             {friends.includes(user.id) ? ( <div>{Friend}</div> ) : ( <div  className='addFriend' onClick={() => togglePopUp(user.id) }>{addFriend}</div> )}
           </div>
