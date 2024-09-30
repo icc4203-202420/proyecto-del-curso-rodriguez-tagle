@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import './ShowEvent.css'
+import { ConstructionOutlined } from '@mui/icons-material';
 
 const formatDate = (dateString) => {
   if (dateString) {
@@ -20,12 +21,16 @@ const formatDate = (dateString) => {
 
 function ShowEvent() {
     const { id } = useParams();
-    const [event, setEvent] = useState({});
+    const [event, setEvent] = useState(null);
     const [friends, setFriends] = useState([]);
     const [attendants, setAttendants] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
     const [friendNames, setFriendNames] = useState([]);
     const [otherAttendees, setOtherAttendees] = useState([]);
+    const [file, setFile] = useState(null);
+    const [flyerUrls, setFlyerUrls] = useState([]);
+    const [flyerData, setFlyerData] = useState([]);
+    const [date, setDate] = useState('Loading...(state)');
 
     const user = JSON.parse(localStorage.getItem('Tapp/Session/currentUser'));
     const token = localStorage.getItem('Tapp/Session/token').replace(/['"]+/g, '').replace('Bearer ', '');
@@ -38,9 +43,27 @@ function ShowEvent() {
 
     useEffect(() => {
         axiosInstance.get(`/events/${id}`)
-            .then(res => setEvent(res.data.event))
+            .then(res => {
+              const eventData = res.data.event;
+              setEvent(eventData);
+              const eventDate = formatDate(eventData.date);
+              setDate(eventDate);
+              if (eventData.flyer_urls) {
+                setFlyerUrls(eventData.flyer_urls);
+                axiosInstance.get(`/events/${id}/event_pictures`)
+                .then(res2 => {
+                  const event_pictures_data = res2.data.event_pictures;
+                  console.log(event_pictures_data);
+                  setFlyerData([...event_pictures_data]);
+                })
+              }
+            })
             .catch(error => console.error('Error loading event data:', error));
     }, [id]);
+
+    useEffect(() => {
+      console.log('flyerData updated:', flyerData);
+    }, [flyerData]);
 
     useEffect(() => {
         axiosInstance.get(`/attendances/${id}`)
@@ -74,7 +97,63 @@ function ShowEvent() {
 
     }, [allUsers, friends, attendants]);
 
-    const date = formatDate(event.date)
+    useEffect(() => {
+      if (event) {
+        
+      }
+    }, [event])
+
+    const handleFileChange = (e) => {
+      setFile(e.target.files);
+    };
+    
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (!file) return;
+    
+      const promises = Array.from(file).map(f => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
+            resolve(`data:${f.type};base64,${base64String}`);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(f);
+        });
+      });
+    
+      Promise.all(promises)
+        .then(base64Images => {
+          axiosInstance.put(`/events/${id}`, {
+            event: {
+              image_base64: base64Images,
+              user_id: user.id
+            }
+          }, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+          .then(res => {
+            alert('Images uploaded successfully');
+            setFlyerUrls(res.data.event.flyer_urls);
+            axiosInstance.get(`/events/${id}/event_pictures`)
+            
+            
+          })
+          .catch(error => {
+            console.error('Error uploading images:', error);
+            alert('Error uploading images');
+          });
+        })
+        .catch(err => console.error('Error processing images:', err));
+    };
+    
+
+    if (!event) {
+      return <div>Loading...</div>;
+    }
 
     return (
       <div className='show-event-container'>
@@ -113,6 +192,27 @@ function ShowEvent() {
             </div>
           )}
         </div>
+        {flyerUrls.length > 0 && (
+          <div className='show-event-flyer'>
+            <h2 style={{ color: 'black' }}>Event Flyers</h2>
+            {flyerUrls.map((url, index) => (
+                flyerData.length > 0 && (
+                  <div className='flyer'>
+                    <div style={{color: 'black'}} className='flyer-header'>
+                      @{allUsers.find((user) => user.id === flyerData[index].user_id)?.handle}
+                    </div>
+                    <img key={index} src={url} alt={`${event.name} flyer ${index + 1}`} />
+                    <div style={{color: 'black'}} className='flyer-footer'>{flyerData[index].description}</div>
+                    <br />
+                  </div>
+                )
+            ))}
+          </div>
+        )}
+        <form onSubmit={handleSubmit}>
+          <input type="file" onChange={handleFileChange} />
+          <button type="submit">Upload Image</button>
+        </form>
       </div>
     );
 }

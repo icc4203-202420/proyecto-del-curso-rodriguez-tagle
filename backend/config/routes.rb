@@ -30,8 +30,10 @@ Rails.application.routes.draw do
       end
       resources :brands
       resources :breweries
+      resources :tags
       resources :events do
         resources :attendances
+        resources :event_pictures
       end
       resources :attendances
       resources :users do
