@@ -107,3 +107,73 @@
 .users-list-container {
     margin-top: 30px;
 }
+
+.popUp {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popUp-content {
+    background-color: #EDB854;
+    max-height: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    scrollbar-color: #C58100 #EDB854;
+  }
+
+  .popUp-content ul {
+    list-style-type: none;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0;
+  }
+  
+  .popUp-content li {
+    cursor: pointer;
+    padding: 10px;
+    background-color: #C58100;
+    margin: 5px 0;
+    border-radius: 5px;
+  }
+  
+  .popUp-content li:hover {
+    background-color: #ddd;
+  }
+
+  .popUp-content h3 {
+    color: #624000;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .none-button {
+    background-color: #b37401;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .close-popUp {
+    display: flex;
+    justify-content: right;
+    align-items: right;
+    color: #624000;
+    font-size: 20px;
+    font-weight: 700;
+  }
