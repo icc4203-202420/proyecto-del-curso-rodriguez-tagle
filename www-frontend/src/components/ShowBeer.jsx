@@ -1,9 +1,7 @@
 import axiosInstance from '../api/axios';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Review from './Review';
-
-import { Rating, Typography, Grid2, Box, CircularProgress, Alert, Divider } from '@mui/material';
+import Review from './Review';import { Rating, Typography, Grid2, Box, CircularProgress, Alert, Divider } from '@mui/material';
 
 import './ShowBeer.css'
 
