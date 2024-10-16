@@ -32,6 +32,6 @@ module Backend
     config.action_dispatch.default_headers = {
       'X-Frame-Options' => 'ALLOW-FROM http://localhost:3001',
       'Content-Security-Policy' => "frame-ancestors 'self' http://localhost:3001"
-    }    
+    }     
   end
 end
