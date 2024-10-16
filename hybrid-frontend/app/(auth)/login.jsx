@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 
 
@@ -12,6 +12,10 @@ export default function Login() {
 
   const handleLogin = () => {
     login(token);
+  };
+  
+  const handleSignup = () => {
+    router.push('/signup');
   };
   
   return (
@@ -37,8 +41,9 @@ export default function Login() {
         />
       </Svg>
       <Text>LOGIN</Text>
-      <Button title="Login" onPress={handleLogin} />
-      <StatusBar style="auto" />
+      <Button title='Login' onPress={handleLogin} />
+      <Button title='Signup' onPress={handleSignup} />
+      {/* <StatusBar style="auto" /> */}
     </View>
   );
 }
