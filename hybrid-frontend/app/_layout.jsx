@@ -1,25 +1,19 @@
-// import { Stack } from 'expo-router';
-// import { AuthProvider } from '../context/AuthContext';
-// import { useProtectedRoute } from './_auth';
-
-// export default function RootLayout() {
-//   useProtectedRoute();
-
-//   return (
-//     <AuthProvider>
-//       <Stack />
-//     </AuthProvider>
-//   );
-// }
-import { Stack } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { AuthProvider } from '../context/AuthContext';
 import { useProtectedRoute } from './_auth';
 
 export default function RootLayout() {
+  
   return (
     <AuthProvider>
       <ProtectedRouteWrapper>
-        <Stack />
+        <Tabs
+          screenOptions={{
+            tabBarStyle: {
+              display: 'none'
+            }
+          }}
+        />
       </ProtectedRouteWrapper>
     </AuthProvider>
   );

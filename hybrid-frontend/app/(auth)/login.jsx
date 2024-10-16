@@ -6,16 +6,12 @@ import { useAuth } from '../../context/AuthContext';
 
 
 
-export default function Login() {
-  // const { signUpHandler, tokenHandler } = route.params;
-  
-  const { login } = useAuth();
+export default function Login() {  
+  const { login, token } = useAuth();
   const router = useRouter();
 
   const handleLogin = () => {
-    // Perform login logic here
-    login('your-token-here');
-    router.replace('/');
+    login(token);
   };
   
   return (

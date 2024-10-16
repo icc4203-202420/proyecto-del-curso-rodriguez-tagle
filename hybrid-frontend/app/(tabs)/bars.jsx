@@ -1,6 +1,6 @@
 import { Text } from "react-native";
 
-export default function Users() {
+export default function Bars() {
   return (
     <Text>bars</Text>
   );
