@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
 
   const login = async (newToken) => {
     try {
-      await AsyncStorage.setItem('Tapp/Session/token', newToken);
+      await AsyncStorage.setItem('Tapp/Session/token', JSON.stringify(newToken));
       setToken(newToken);
       setIsAuth(true);
     } catch (e) {

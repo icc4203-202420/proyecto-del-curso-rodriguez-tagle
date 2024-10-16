@@ -6,7 +6,7 @@ const ShowBeers = ({ data, option }) => {
   const filteredData = option
     ? data.filter(beer => beer.name.toLowerCase().includes(option.toLowerCase()))
     : data;
-
+  
   return (
     <FlatList
       data={filteredData}

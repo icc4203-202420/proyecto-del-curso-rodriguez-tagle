@@ -5,7 +5,6 @@ import Svg, { Path } from 'react-native-svg';
 
 
 export default function Signup() {
-  // const { signUpHandler } = route.params;
   return (
     <View style={styles.container}>
       <Svg

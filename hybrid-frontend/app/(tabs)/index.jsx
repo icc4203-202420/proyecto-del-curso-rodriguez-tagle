@@ -1,7 +1,12 @@
-import { Text } from "react-native";
+import { Text, View, Button } from "react-native";
+import { useAuth } from '../../context/AuthContext';
 
-export default function Users() {
+export default function Home() {
+  const { logout } = useAuth();
   return (
-    <Text>Home</Text>
+    <View>
+      <Text>Home</Text>
+      <Button title="Logout" onPress={logout} />
+    </View>
   );
 }
