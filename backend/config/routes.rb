@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       resources :beers do
         get 'reviews', to: 'reviews#beerIndex'
         post 'reviews', to: 'reviews#beerCreate'
+        resources :bars_beers, only: [:index], action: 'indexBeers'
       end
       resources :brands
       resources :breweries
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
         end
       end
       resources :attendances
+      resources :bars_beers, only: [:index]
       resources :users do
         resources :reviews, only: [:index], action: 'userIndex'
         resources :friendships

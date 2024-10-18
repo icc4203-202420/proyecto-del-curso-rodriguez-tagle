@@ -8,11 +8,14 @@ export default function RootLayout() {
     <AuthProvider>
       <ProtectedRouteWrapper>
         <Tabs
+
           screenOptions={{
+            headerShown: false,
             tabBarStyle: {
               display: 'none'
             }
           }}
+
         />
       </ProtectedRouteWrapper>
     </AuthProvider>

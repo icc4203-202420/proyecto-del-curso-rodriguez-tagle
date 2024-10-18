@@ -11,6 +11,7 @@ export function useProtectedRoute() {
     const inAuthGroup = segments[0] === '(auth)';
 
     if (!isAuth && !inAuthGroup) {
+      console.log(isAuth, inAuthGroup);
       router.replace('/login');
     } else if (isAuth && inAuthGroup) {
       router.replace('/');
