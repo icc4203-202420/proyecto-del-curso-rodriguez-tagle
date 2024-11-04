@@ -73,7 +73,8 @@ export default function Login() {
               .then(response => response.json())
               .then(data => {
                 // TODO: obtener token de respuesta y pasarlo a login(). Actualmente no se esta pasando ningún token.
-                login(token, data.status.data.user);
+                // login(token, data.status.data.user);
+                login(data.headers.get('Authorization'), data.status.data.user);
                 setSubmitting(false);
               })
               .catch(error => {
