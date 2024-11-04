@@ -9,7 +9,7 @@ const ShowBeers = ({ data, option }) => {
   const filteredData = option
     ? data.filter(beer => beer.name.toLowerCase().includes(option.toLowerCase()))
     : data;
-  
+
   return (
     <FlatList
       data={filteredData}
@@ -31,13 +31,13 @@ export default function Beers() {
 
   const fetchAsyncStorage = async () => {
     try {
-      const currentUser = await AsyncStorage.getItem('Tapp/Session/currentUser');
-      setCurrentUser(currentUser);
+      const currentUserAux = await AsyncStorage.getItem('Tapp/Session/currentUser');
+      setCurrentUser(currentUserAux);
     } catch (error) {
       console.error(error);
     }
   };
-  
+
   const getBeers = async () => {
     try {
       const response = await fetch(`${api}/beers`);
@@ -53,7 +53,7 @@ export default function Beers() {
   useEffect(() => {
     fetchAsyncStorage();
   }, []);
-  
+
   useEffect(() => {
     getBeers();
   }, []);
