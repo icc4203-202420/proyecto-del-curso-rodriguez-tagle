@@ -25,13 +25,13 @@ export default function TabLayout() {
           tabBarIcon: () => <FontAwesome name="map-marker" size={24} color="black" />
         }}
       />
-      {/* <Tabs.Screen
-        name="Events"
+      <Tabs.Screen
+        name="events"
         options={{
           title: 'Events',
           tabBarIcon: () => <FontAwesome name="calendar" size={24} color="black" />
         }}
-      /> */}
+      />
       <Tabs.Screen
         name="users"
         options={{
