@@ -19,7 +19,7 @@ const loginValidationSchema = yup.object().shape({
     .required('Password is required'),
 });
 
-export default function Login() {  
+export default function Login() {
   const { login, token } = useAuth();
   const router = useRouter();
 
@@ -37,7 +37,7 @@ export default function Login() {
           viewBox="0 -100 390 588"
           preserveAspectRatio="none"
         >
-          <Path 
+          <Path
             d='M0 19.2328C0 19.2328 21.1986 11.198 45.5 5.51497C59.4521 2.25218 74.4269 -0.235429 87 0.0177375C127.346 0.830135 147.164 29.3455 187.5 30.7619C226.328 32.1254 246.678 7.34625 285.5 8.98479C307 9.89223 318.555 21.4027 340 19.2328C360.323 17.1765 390 0.0177375 390 0.0177375V588H0V19.2328Z'
             fill='#EDB854'
           />
@@ -63,26 +63,29 @@ export default function Login() {
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ user: {
-                email: values.email,
-                password: values.password,
-              } })
+              body: JSON.stringify({
+                user: {
+                  email: values.email,
+                  password: values.password,
+                }
+              })
             })
-            .then(response => response.json())
-            .then(data => {
-              login(token, data.status.data.user);
-              setSubmitting(false);
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              setSubmitting(false);
-            });
+              .then(response => response.json())
+              .then(data => {
+                // TODO: obtener token de respuesta y pasarlo a login(). Actualmente no se esta pasando ningún token.
+                login(token, data.status.data.user);
+                setSubmitting(false);
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                setSubmitting(false);
+              });
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isSubmitting }) => (
             <View style={styles.formContainer}>
               <Text style={styles.loginText}>LOGIN</Text>
-              
+
               <TextInput
                 name="email"
                 placeholder="Email"
@@ -116,7 +119,7 @@ export default function Login() {
                   <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
               )}
-              
+
               <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
                 <Text style={styles.signupText}>Signup</Text>
               </TouchableOpacity>
