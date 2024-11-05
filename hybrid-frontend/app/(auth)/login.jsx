@@ -61,7 +61,7 @@ export default function Login() {
             fetch(`${api}/login`, {
               method: 'POST',
               headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json',             
               },
               body: JSON.stringify({
                 user: {
@@ -70,17 +70,28 @@ export default function Login() {
                 }
               })
             })
-              .then(response => response.json())
-              .then(data => {
-                // TODO: obtener token de respuesta y pasarlo a login(). Actualmente no se esta pasando ningún token.
-                // login(token, data.status.data.user);
-                login(data.headers.get('Authorization'), data.status.data.user);
-                setSubmitting(false);
-              })
-              .catch(error => {
-                console.error('Error:', error);
-                setSubmitting(false);
+            .then(response => {
+
+              const headers = response.headers;
+              const status = response.status;
+              
+
+              return response.json().then(data => {
+                return { data, headers, status };
               });
+            })
+            .then(({ data, headers, status }) => {
+            
+              const token = headers.get('authorization');
+              const user = data.status.data.user;
+              
+              login(token, user);
+              setSubmitting(false);
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              setSubmitting(false);
+            });
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isSubmitting }) => (

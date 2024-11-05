@@ -15,12 +15,12 @@ export function AuthProvider({ children }) {
 
   const loadAuthState = async () => {
     try {
-      // const storedToken = await AsyncStorage.getItem('Tapp/Session/token');
-      // const storedUser = await AsyncStorage.getItem('Tapp/Session/currentUser');
-      // const storedAuth = await AsyncStorage.getItem('Tapp/isAuth');
-      const storedToken = await SecureStore.getItemAsync('Tapp/Session/token');
-      const storedUser = await SecureStore.getItemAsync('Tapp/Session/currentUser');
-      const storedAuth = await SecureStore.getItemAsync('Tapp/isAuth');
+      // const storedToken = await AsyncStorage.getItem('token');
+      // const storedUser = await AsyncStorage.getItem('currentUser');
+      // const storedAuth = await AsyncStorage.getItem('isAuth');
+      const storedToken = await SecureStore.getItemAsync('token');
+      const storedUser = await SecureStore.getItemAsync('currentUser');
+      const storedAuth = await SecureStore.getItemAsync('isAuth');
 
       console.log('Stored user:', storedUser);
       if (storedToken) {
@@ -39,9 +39,9 @@ export function AuthProvider({ children }) {
       setIsAuth(true);
       setCurrentUser(user);
       console.log('User:', user);
-      await SecureStore.setItemAsync('Tapp/Session/token', JSON.stringify(newToken));
-      await SecureStore.setItemAsync('Tapp/Session/currentUser', JSON.stringify(user));
-      await SecureStore.setItemAsync('Tapp/isAuth', JSON.stringify(isAuth));
+      await SecureStore.setItemAsync('token', JSON.stringify(newToken));
+      await SecureStore.setItemAsync('currentUser', JSON.stringify(user));
+      await SecureStore.setItemAsync('isAuth', JSON.stringify(isAuth));
     } catch (e) {
       console.error('Failed to save auth state:', e);
     }
@@ -49,9 +49,9 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     try {
-      await SecureStore.deleteItemAsync('Tapp/Session/token');
-      await SecureStore.deleteItemAsync('Tapp/Session/currentUser');
-      await SecureStore.deleteItemAsync('Tapp/isAuth');
+      await SecureStore.deleteItemAsync('token');
+      await SecureStore.deleteItemAsync('currentUser');
+      await SecureStore.deleteItemAsync('isAuth');
       setToken(null);
       setCurrentUser(null);
       setIsAuth(false);

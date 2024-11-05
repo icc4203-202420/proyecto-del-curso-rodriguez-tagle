@@ -1,5 +1,4 @@
 import useAxios from 'axios-hooks';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import './Users.css';
 import addFriend from '../assets/AddFriend';

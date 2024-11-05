@@ -2,8 +2,6 @@ import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Text, View, FlatList, ActivityIndicator, TextInput, StyleSheet } from "react-native";
 import api from '../api_url';
-import { useAuth } from "../../context/AuthContext";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ShowBeers = ({ data, option }) => {
   const filteredData = option
@@ -15,8 +13,8 @@ const ShowBeers = ({ data, option }) => {
       data={filteredData}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-        <View>
-          <Link style={styles.beerItem} href={`(views)/${item.id}`}>{item.name}</Link>
+        <View style={styles.beerBox}>
+          <Link style={styles.beerItem} href={`(views)/beer/${item.id}`}>{item.name}</Link>
         </View>
       )}
     />
@@ -27,16 +25,6 @@ export default function Beers() {
   const [isLoading, setLoading] = useState(true);
   const [beers, setBeers] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
-  const [currentUser, setCurrentUser] = useState(null);
-
-  const fetchAsyncStorage = async () => {
-    try {
-      const currentUserAux = await AsyncStorage.getItem('Tapp/Session/currentUser');
-      setCurrentUser(currentUserAux);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const getBeers = async () => {
     try {
@@ -51,14 +39,8 @@ export default function Beers() {
   };
 
   useEffect(() => {
-    fetchAsyncStorage();
-  }, []);
-
-  useEffect(() => {
     getBeers();
   }, []);
-
-  console.log(currentUser);
 
   return (
     <View style={styles.container}>
@@ -114,7 +96,6 @@ const styles = StyleSheet.create({
   },
   beerItem: {
     fontSize: 18,
-    backgroundColor: '#C58100',
     color: '#F1DCA7',
     paddingVertical: 15,
     marginVertical: 7,
@@ -126,4 +107,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 2,
   },
+  beerBox: {
+    borderRadius: 10,
+    backgroundColor: '#C58100',
+    marginBottom: 10,
+  }
 });

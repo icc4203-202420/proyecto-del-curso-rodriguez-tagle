@@ -57,7 +57,6 @@ function ShowBar() {
         }
         axiosInstance.post(`/events/${id}/attendances`, data)
             .then((res) => {
-
                 setAttendances([...attendances, id]);
             })
             .catch((error) => {

@@ -1,10 +1,10 @@
 import { Text, View, Button, ActivityIndicator, StyleSheet, FlatList, Alert, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect, useReducer, useCallback } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import api from '../api_url';
+import api from '../../api_url';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { useFocusEffect } from '@react-navigation/native';
 
 const validationSchema = yup.object({
@@ -23,9 +23,9 @@ const ReviewForm = () => {
     const [user_id, setUserId] = useState(null);
     const [userReview, setUserReview] = useState(null);
 
-    const fetchAsyncStorage = async () => {
+    const fetchSecureStore = async () => {
         try {
-            const currentUser = await AsyncStorage.getItem('Tapp/Session/currentUser');
+            const currentUser = await SecureStore.getItemAsync('currentUser');
             setCurrentUser(JSON.parse(currentUser));
             setUserId(JSON.parse(currentUser).id);
         } catch (error) {
@@ -34,7 +34,7 @@ const ReviewForm = () => {
     };
 
     useEffect(() => {
-        fetchAsyncStorage();
+        fetchSecureStore();
     }, []);
 
     const reviewsReducer = (state, action) => {
