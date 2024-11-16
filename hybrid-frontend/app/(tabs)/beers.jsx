@@ -1,7 +1,9 @@
 import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Text, View, FlatList, ActivityIndicator, TextInput, StyleSheet } from "react-native";
-import api from '../api_url';
+import {API_URL} from '@env';
+
+const api = API_URL;
 
 const ShowBeers = ({ data, option }) => {
   const filteredData = option

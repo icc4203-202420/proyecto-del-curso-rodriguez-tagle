@@ -4,7 +4,9 @@ import Svg, { Path } from 'react-native-svg';
 import { useRouter } from 'expo-router';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import api from '../api_url';
+import {API_URL} from '@env';
+
+const api = API_URL;
 
 // Esquema de validación con Yup
 const signUpValidationSchema = yup.object({

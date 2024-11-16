@@ -5,7 +5,11 @@ import { useRouter } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import api from '../api_url';
+import { useEffect } from 'react';
+import {API_URL} from '@env';
+
+
+const api = API_URL;
 
 // Validation schema using Yup
 const loginValidationSchema = yup.object().shape({

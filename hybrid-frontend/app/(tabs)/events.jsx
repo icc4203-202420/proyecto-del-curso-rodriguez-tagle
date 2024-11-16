@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, FlatList, ActivityIndicator, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { Link } from "expo-router";
-import api from '../api_url';
 import * as SecureStore from 'expo-secure-store';
+import {API_URL} from '@env';
+
+const api = API_URL;
 
 const ShowEvents = ({ data, option, attendances, handleAssistance, isAttending }) => {
     const filteredData = option

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, ActivityIndicator, StyleSheet, FlatList, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import api from '../../api_url';
 import * as SecureStore from 'expo-secure-store';
+import {API_URL} from '@env';
+
+const api = API_URL;
 
 const ShowEvent = () => {
     const router = useRouter();

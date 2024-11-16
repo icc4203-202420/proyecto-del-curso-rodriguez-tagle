@@ -1,10 +1,12 @@
 import { Link } from "expo-router";
-import api from '../api_url';
 import React, { useEffect, useState } from "react";
 import { Text, View, FlatList, ActivityIndicator, TextInput, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import AddFriend from '../../assets/AddFriend';
 import Friend from '../../assets/Friend';
 import * as SecureStore from 'expo-secure-store';
+import {API_URL} from '@env';
+
+const api = API_URL;
 
 const ShowUsers = ({ data, option, friends, togglePopUp, popUp, bars, addFriend }) => {
   const filteredData = option

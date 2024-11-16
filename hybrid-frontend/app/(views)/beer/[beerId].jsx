@@ -1,11 +1,13 @@
 import { Text, View, Button, ActivityIndicator, StyleSheet, FlatList, Alert, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect, useReducer, useCallback } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import api from '../../api_url';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import * as SecureStore from 'expo-secure-store';
 import { useFocusEffect } from '@react-navigation/native';
+import {API_URL} from '@env';
+
+const api = API_URL;
 
 const validationSchema = yup.object({
     rating: yup.number().min(1).max(5).required('Rating is required'),

@@ -27,7 +27,8 @@
       "API_URL": "http://192.168.0.89:3001/api/v1"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-secure-store"
     ]
   }
 }
