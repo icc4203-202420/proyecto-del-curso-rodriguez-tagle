@@ -5,9 +5,7 @@ import { useRouter } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useEffect } from 'react';
-import {API_URL} from '@env';
-
+import { API_URL } from '@env';
 
 const api = API_URL;
 
@@ -24,7 +22,7 @@ const loginValidationSchema = yup.object().shape({
 });
 
 export default function Login() {
-  const { login, token } = useAuth();
+  const { login } = useAuth();
   const router = useRouter();
 
   // Handler for signup navigation
@@ -62,40 +60,51 @@ export default function Login() {
           initialValues={{ email: '', password: '' }}
           validationSchema={loginValidationSchema}
           onSubmit={(values, { setSubmitting }) => {
+            console.log('API URL:', api);
             fetch(`${api}/login`, {
               method: 'POST',
               headers: {
-                'Content-Type': 'application/json',             
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
               },
               body: JSON.stringify({
                 user: {
                   email: values.email,
                   password: values.password,
+                },
+              }),
+            })
+              .then(async (response) => {
+                const text = await response.text();
+                console.log('Response text:', text);
+
+                if (!response.ok) {
+                  throw new Error(`HTTP Error: ${response.status} - ${text}`);
+                }
+
+                try {
+                  const data = JSON.parse(text);
+                  return { data, headers: response.headers, status: response.status };
+                } catch (error) {
+                  throw new Error(`Error parsing JSON: ${error.message}`);
                 }
               })
-            })
-            .then(response => {
+              .then(({ data, headers }) => {
+                const token = headers.get('authorization');
+                const user = data?.status?.data?.user;
 
-              const headers = response.headers;
-              const status = response.status;
-              
+                if (token && user) {
+                  login(token, user);
+                } else {
+                  console.error('Token or user data missing in response:', data);
+                }
 
-              return response.json().then(data => {
-                return { data, headers, status };
+                setSubmitting(false);
+              })
+              .catch((error) => {
+                console.error('Error:', error.message);
+                setSubmitting(false);
               });
-            })
-            .then(({ data, headers, status }) => {
-            
-              const token = headers.get('authorization');
-              const user = data.status.data.user;
-              
-              login(token, user);
-              setSubmitting(false);
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              setSubmitting(false);
-            });
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isSubmitting }) => (
@@ -195,7 +204,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-    elevation: 2,  // For Android shadow
+    elevation: 2,
   },
   errorText: {
     fontSize: 14,
