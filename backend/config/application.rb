@@ -36,5 +36,7 @@ module Backend
       'X-Frame-Options' => 'ALLOW-FROM http://localhost:3001',
       'Content-Security-Policy' => "frame-ancestors 'self' http://localhost:3001"
     }     
+    config.hosts << 'regularly-viable-bluegill.ngrok-free.app'
+
   end
 end
