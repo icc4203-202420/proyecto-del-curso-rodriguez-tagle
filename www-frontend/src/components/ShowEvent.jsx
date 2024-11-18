@@ -98,12 +98,6 @@ function ShowEvent() {
 
     }, [allUsers, friends, attendants]);
 
-    useEffect(() => {
-      if (event) {
-        
-      }
-    }, [event])
-
     const handleFileChange = (e) => {
       setFile(e.target.files);
     };

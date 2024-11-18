@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Button, FlatList, StyleSheet } from "react-native";
+import { Link } from "expo-router";
+import { Text, View, Button, FlatList, StyleSheet, TextInput } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import { createConsumer } from "@rails/actioncable";
 import { WS_URL } from "@env";
@@ -11,35 +12,65 @@ global.removeEventListener = EventRegister.removeEventListener;
 export default function Home() {
   const { logout } = useAuth();
   const [reviews, setReviews] = useState([]);
-
+  const [filteredReviews, setFilteredReviews] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const cable = createConsumer(WS_URL);
     const channel = cable.subscriptions.create("FeedChannel", {
       received(data) {
         setReviews((prevReviews) => [data, ...prevReviews]);
-      }
+        setFilteredReviews((prevReviews) => [data, ...prevReviews]); // Sincroniza el filtro
+      },
     });
+
+    return () => {
+      channel.unsubscribe();
+    };
   }, []);
 
+  useEffect(() => {
+    if (!searchTerm) {
+      setFilteredReviews(reviews); // Si no hay término, muestra todo
+    } else {
+      const lowerCaseTerm = searchTerm.toLowerCase();
+      const filtered = reviews.filter(
+        (review) =>
+          review?.beer?.name?.toLowerCase().includes(lowerCaseTerm) ||
+          review?.user?.name?.toLowerCase().includes(lowerCaseTerm) ||
+          review?.text?.toLowerCase().includes(lowerCaseTerm)
+      );
+      setFilteredReviews(filtered);
+    }
+  }, [searchTerm, reviews]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Feed</Text>
 
+      {/* Campo de búsqueda */}
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search by beer, user, or review..."
+        value={searchTerm}
+        onChangeText={(text) => setSearchTerm(text)}
+      />
+
       <FlatList
-        data={reviews}
+        data={filteredReviews}
         keyExtractor={(item, index) => item?.id?.toString() || index.toString()}
         renderItem={({ item }) => (
-          <View style={styles.reviewContainer}>
-            <Text style={styles.beerName}>{item?.beer?.name}</Text>
-            <Text style={styles.userName}>{item?.user?.name}:</Text>
-            <Text style={styles.reviewText}>{item?.text}</Text>
-            <Text style={styles.rating}>Rating: {item?.rating}</Text>
-          </View>
+          <Link style={styles.beerItem} href={`(views)/beer/${item?.beer?.id}`}>
+            <View style={styles.reviewContainer}>
+              <Text style={styles.beerName}>{item?.beer?.name}</Text>
+              <Text style={styles.userName}>{item?.user?.name}:</Text>
+              <Text style={styles.reviewText}>{item?.text}</Text>
+              <Text style={styles.rating}>Rating: {item?.rating}</Text>
+            </View>
+          </Link>
         )}
         ListEmptyComponent={
-          <Text style={styles.emptyText}>No reviews yet. Stay tuned!</Text>
+          <Text style={styles.emptyText}>No reviews match your search.</Text>
         }
       />
 
@@ -61,13 +92,27 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "center",
   },
+  searchInput: {
+    height: 40,
+    borderWidth: 1,
+    borderColor: "#CCC",
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    backgroundColor: "#FFF",
+  },
   reviewContainer: {
     marginBottom: 15,
     padding: 10,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 5,
+    borderRadius: 10,
+    height: 120,
+    width: "100%",
     backgroundColor: "#FFF",
+  },
+  beerItem: {
+    marginBottom: 10,
   },
   beerName: {
     fontSize: 18,
