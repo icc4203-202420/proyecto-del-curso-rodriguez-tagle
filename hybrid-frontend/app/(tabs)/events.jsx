@@ -46,7 +46,7 @@ const ShowEvents = ({ data, option, attendances, handleAssistance, isAttending }
                         </View>
                         <Link
                             style={styles.viewEventButton}
-                            href={`/(views)/event/${item.id}`}
+                            href={`(views)/event/${item.id}`}
                         >
                             <Text style={styles.viewEventButtonText}>View Event</Text>
                         </Link>

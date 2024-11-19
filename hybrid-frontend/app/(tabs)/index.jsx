@@ -20,7 +20,7 @@ export default function Home() {
     const channel = cable.subscriptions.create("FeedChannel", {
       received(data) {
         setReviews((prevReviews) => [data, ...prevReviews]);
-        setFilteredReviews((prevReviews) => [data, ...prevReviews]); // Sincroniza el filtro
+        setFilteredReviews((prevReviews) => [data, ...prevReviews]); 
       },
     });
 
@@ -31,7 +31,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!searchTerm) {
-      setFilteredReviews(reviews); // Si no hay término, muestra todo
+      setFilteredReviews(reviews); 
     } else {
       const lowerCaseTerm = searchTerm.toLowerCase();
       const filtered = reviews.filter(
